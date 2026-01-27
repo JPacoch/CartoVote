@@ -1,0 +1,13 @@
+#gitignore file
+.DS_Store
+Thumbs.db
+
+.vscode/
+.idea/
+*.swp
+
+.env
+*.log
+
+#dependencies
+node_modules/

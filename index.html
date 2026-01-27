@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoQuest - Bydgoszcz</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>GeoQuest - Bydgoszcz</h1>
+        <form id="questionnaire-form">
+            <!-- Stage 1: Personal Information -->
+            <div id="stage-1" class="stage active">
+                <h2>Step 1: About You</h2>
+                <div class="form-group">
+                    <label for="name">Your Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="age">Your Age:</label>
+                    <input type="number" id="age" name="age" required>
+                </div>
+                <div class="form-group">
+                    <label for="location">Your Location (e.g., neighborhood):</label>
+                    <input type="text" id="location" name="location" required>
+                </div>
+                <button type="button" class="next-btn">Next</button>
+            </div>
+
+            <!-- Stage 2: City Feedback -->
+            <div id="stage-2" class="stage">
+                <h2>Step 2: About Bydgoszcz</h2>
+                <div class="form-group">
+                    <label>How do you rate the public transport?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="transport" value="1"> 1 (Poor)</label>
+                        <label><input type="radio" name="transport" value="2"> 2</label>
+                        <label><input type="radio" name="transport" value="3"> 3 (Average)</label>
+                        <label><input type="radio" name="transport" value="4"> 4</label>
+                        <label><input type="radio" name="transport" value="5"> 5 (Excellent)</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="feedback">What do you like most about the city?</label>
+                    <textarea id="feedback" name="feedback" rows="4"></textarea>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="back-btn">Back</button>
+                    <button type="button" class="next-btn">Next</button>
+                </div>
+            </div>
+
+            <!-- Stage 3: Map Question -->
+            <div id="stage-3" class="stage">
+                <h2>Step 3: Best Points in the City</h2>
+                <div class="form-group">
+                    <label>Select the best points in the city on the map:</label>
+                    <div id="map"></div>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="back-btn">Back</button>
+                    <button type="submit">Submit Answers</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
