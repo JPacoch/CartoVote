@@ -47,11 +47,16 @@
                 <div class="form-group">
                     <label>How do you rate the public transport?</label>
                     <div class="radio-group">
-                        <label><input type="radio" name="transport" value="1"> 1 (Poor)</label>
-                        <label><input type="radio" name="transport" value="2"> 2</label>
-                        <label><input type="radio" name="transport" value="3"> 3 (Average)</label>
-                        <label><input type="radio" name="transport" value="4"> 4</label>
-                        <label><input type="radio" name="transport" value="5"> 5 (Excellent)</label>
+                        <input type="radio" id="t1" name="transport" value="1">
+                        <label for="t1">1 (Poor)</label>
+                        <input type="radio" id="t2" name="transport" value="2">
+                        <label for="t2">2</label>
+                        <input type="radio" id="t3" name="transport" value="3">
+                        <label for="t3">3 (Average)</label>
+                        <input type="radio" id="t4" name="transport" value="4">
+                        <label for="t4">4</label>
+                        <input type="radio" id="t5" name="transport" value="5">
+                        <label for="t5">5 (Excellent)</label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -76,7 +81,19 @@
                     <button type="submit">Submit Answers</button>
                 </div>
             </div>
+
+            <!-- Success Stage -->
+            <div id="success-stage" class="stage" style="text-align: center; padding-top: 20px;">
+                <h2>Thank You!</h2>
+                <p>Your feedback for Bydgoszcz has been recorded.</p>
+                <button type="button" id="restart-btn" class="next-btn" style="margin-top: 20px;">Submit Another</button>
+            </div>
         </form>
+    </div>
+
+    <div id="notification-toast" class="notification-toast">
+        <span id="notification-message"></span>
+        <button id="notification-close" type="button">&times;</button>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
