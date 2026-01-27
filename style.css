@@ -31,6 +31,12 @@ h2 {
     margin-bottom: 30px;
 }
 
+p {
+    margin-bottom: 20px;
+    text-align: center;
+    line-height: 1.6;
+}
+
 .stage {
     display: none;
 }

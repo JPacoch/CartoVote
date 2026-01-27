@@ -1,0 +1,7 @@
+{
+  "name": "CartoVote",
+  "version": "0.1",
+  "scripts": {
+    "build": "sed -i \"s|VITE_SUPABASE_URL|$SUPABASE_URL|g\" script.js && sed -i \"s|VITE_SUPABASE_ANON_KEY|$SUPABASE_ANON_KEY|g\" script.js"
+  }
+}

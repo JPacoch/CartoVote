@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GeoQuest - Bydgoszcz</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -11,8 +12,16 @@
     <div class="container">
         <h1>GeoQuest - Bydgoszcz</h1>
         <form id="questionnaire-form">
+            <!-- Welcome Stage -->
+            <div id="stage-0" class="stage active">
+                <h2>Welcome to GeoQuest!</h2>
+                <p>Thank you for participating in our survey about Bydgoszcz. Your feedback is valuable to us.</p>
+                <p>This survey has three short steps and should only take a few minutes to complete.</p>
+                <button type="button" class="next-btn">Begin</button>
+            </div>
+
             <!-- Stage 1: Personal Information -->
-            <div id="stage-1" class="stage active">
+            <div id="stage-1" class="stage">
                 <h2>Step 1: About You</h2>
                 <div class="form-group">
                     <label for="name">Your Name:</label>
@@ -26,7 +35,10 @@
                     <label for="location">Your Location (e.g., neighborhood):</label>
                     <input type="text" id="location" name="location" required>
                 </div>
-                <button type="button" class="next-btn">Next</button>
+                <div class="button-group">
+                    <button type="button" class="back-btn">Back</button>
+                    <button type="button" class="next-btn">Next</button>
+                </div>
             </div>
 
             <!-- Stage 2: City Feedback -->

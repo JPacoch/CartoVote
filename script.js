@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const supabaseUrl = 'YOUR_SUPABASE_URL';
-    const supabaseKey = 'YOUR_SUPABASE_ANON_KEY';
+    const supabaseUrl = 'VITE_SUPABASE_URL';
+    const supabaseKey = 'VITE_SUPABASE_ANON_KEY';
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
     const formData = {
         personal: {},
@@ -8,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         locations: []
     };
 
-    let currentStage = 1;
+    let currentStage = 0;
     const stages = document.querySelectorAll('.stage');
 
     function showStage(stageNumber) {
@@ -77,27 +78,31 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await axios.post(`${supabaseUrl}/functions/v1/submit-survey`, formData, {
-                headers: {
-                    'Authorization': `Bearer ${supabaseKey}`,
-                    'Content-Type': 'application/json'
-                }
-            });
+            const { data, error } = await supabaseClient
+                .from('survey_responses_test')
+                .insert([
+                    {
+                        user_name: formData.personal.name,
+                        user_age: parseInt(formData.personal.age),
+                        user_location: formData.personal.location,
+                        transport_rating: formData.feedback.transportRating,
+                        feedback_text: formData.feedback.likes,
+                        selected_points: formData.locations
+                    }
+                ]);
 
-            if (response.status === 200) {
-                alert('Thank you for your submission!');
-                form.reset();
-                markers.forEach(marker => map.removeLayer(marker));
-                formData.locations = [];
-                showStage(1);
-            } else {
-                alert(`Error submitting data: ${response.statusText}`);
-            }
+            if (error) throw error;
+
+            alert('Thank you for your submission for Bydgoszcz!');
+            form.reset();
+            markers.forEach(marker => map.removeLayer(marker));
+            formData.locations = [];
+            showStage(1);
+
         } catch (error) {
-            console.error('Error submitting data:', error);
-            alert('error submitting data');
+            console.error('Submission error:', error);
+            alert(`Error: ${error.message || 'Check console for details'}`);
         }
     });
 
-    showStage(1);
 });
