@@ -180,11 +180,13 @@ button {
 .next-btn, button[type="submit"] {
     background-color: var(--primary);
     color: var(--white);
+    border: 2px solid var(--primary);
     box-shadow: 0 4px 12px rgba(191, 74, 140, 0.2);
 }
 
 .next-btn:hover, button[type="submit"]:hover {
     background-color: #a63a76;
+    border-color: #a63a76;
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(191, 74, 140, 0.3);
 }
@@ -198,6 +200,18 @@ button {
 
 .back-btn:hover {
     background: var(--secondary);
+    color: var(--white);
+}
+
+.del-btn {
+    background: transparent;
+    color: var(--text);
+    border: 2px solid var(--error);
+    margin-right: 12px;
+}
+
+.del-btn:hover {
+    background: var(--error);
     color: var(--white);
 }
 

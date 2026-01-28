@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const supabaseUrl = 'VITE_SUPABASE_URL';
-    const supabaseKey = 'VITE_SUPABASE_ANON_KEY';
+    // const supabaseUrl = 'VITE_SUPABASE_URL';
+    // const supabaseKey = 'VITE_SUPABASE_ANON_KEY';
+    const supabaseUrl = 'REDACTED_URL';
+    const supabaseKey = 'REDACTED_KEY';
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
     const formData = {
@@ -38,29 +40,81 @@ document.addEventListener('DOMContentLoaded', () => {
                 formData.personal.location = locationInput.value;
 
                 let isValid = true;
+                let firstInvalid = null;
                 [nameInput, ageInput, locationInput].forEach(input => {
                     input.classList.remove('input-error');
-                    if (!input.value) {
+                    if (!input.checkValidity()) {
+                        void input.offsetWidth;
                         input.classList.add('input-error');
                         isValid = false;
+                        if (!firstInvalid) firstInvalid = input;
                         input.addEventListener('input', () => input.classList.remove('input-error'), { once: true });
                     }
                 });
 
                 if (!isValid) {
+                    if (firstInvalid) firstInvalid.reportValidity();
                     return;
                 }
             }
             if (currentStage === 2) {
+                const transportInputs = document.querySelectorAll('input[name="transport"]');
+                const feedbackInput = document.getElementById('feedback');
+                const transportGroup = document.querySelector('.radio-group');
+
                 const transportRating = document.querySelector('input[name="transport"]:checked');
                 formData.feedback.transportRating = transportRating ? transportRating.value : null;
-                formData.feedback.likes = document.getElementById('feedback').value;
+                formData.feedback.likes = feedbackInput.value;
+
+                let isValid = true;
+                let firstInvalid = null;
+
+                transportGroup.classList.remove('input-error');
+                feedbackInput.classList.remove('input-error');
+                transportGroup.style.border = '';
+                transportGroup.style.padding = '';
+                transportGroup.style.borderRadius = '';
+
+                // Validate radio group (checking first element checks the group)
+                if (!transportInputs[0].checkValidity()) {
+                    void transportGroup.offsetWidth;
+                    transportGroup.classList.add('input-error');
+                    transportGroup.style.border = '1px solid #dc3545';
+                    transportGroup.style.padding = '5px';
+                    transportGroup.style.borderRadius = '4px';
+                    isValid = false;
+                    firstInvalid = transportInputs[0];
+                    transportInputs.forEach(input => {
+                        input.addEventListener('change', () => {
+                            transportGroup.classList.remove('input-error');
+                            transportGroup.style.border = '';
+                            transportGroup.style.padding = '';
+                            transportGroup.style.borderRadius = '';
+                        }, { once: true });
+                    });
+                }
+
+                // Validate textarea
+                if (!feedbackInput.checkValidity()) {
+                    void feedbackInput.offsetWidth;
+                    feedbackInput.classList.add('input-error');
+                    isValid = false;
+                    if (!firstInvalid) firstInvalid = feedbackInput;
+                    feedbackInput.addEventListener('input', () => feedbackInput.classList.remove('input-error'), { once: true });
+                }
+
+                if (!isValid) {
+                    showNotification('Please answer all questions to proceed.');
+                    if (firstInvalid) firstInvalid.reportValidity();
+                    return;
+                }
             }
             showStage(currentStage + 1);
         });
     });
 
     document.querySelectorAll('.back-btn').forEach(button => {
+        if (button.id === 'clear-map-btn') return;
         button.addEventListener('click', () => {
             showStage(currentStage - 1);
         });
@@ -113,6 +167,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const successStage = document.getElementById('success-stage');
     const restartBtn = document.getElementById('restart-btn');
+
+    const clearMapBtn = document.getElementById('clear-map-btn');
+    clearMapBtn.addEventListener('click', () => {
+        markers.forEach(marker => map.removeLayer(marker));
+        markers.length = 0;
+        formData.locations = [];
+    });
 
     const notificationToast = document.getElementById('notification-toast');
     const notificationMessage = document.getElementById('notification-message');

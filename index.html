@@ -29,11 +29,16 @@
                 </div>
                 <div class="form-group">
                     <label for="age">Your Age:</label>
-                    <input type="number" id="age" name="age" required>
+                    <input type="number" id="age" name="age" min="1" max="99" required>
                 </div>
                 <div class="form-group">
                     <label for="location">Your Location (e.g., neighborhood):</label>
-                    <input type="text" id="location" name="location" required>
+                    <select id="location" name="location" required>
+                        <option value="" disabled selected>Select your neighborhood</option>
+                        <option value="Option A">Option A</option>
+                        <option value="Option B">Option B</option>
+                        <option value="Option C">Option C</option>
+                    </select>
                 </div>
                 <div class="button-group">
                     <button type="button" class="back-btn">Back</button>
@@ -47,7 +52,7 @@
                 <div class="form-group">
                     <label>How do you rate the public transport?</label>
                     <div class="radio-group">
-                        <input type="radio" id="t1" name="transport" value="1">
+                        <input type="radio" id="t1" name="transport" value="1" required>
                         <label for="t1">1 (Poor)</label>
                         <input type="radio" id="t2" name="transport" value="2">
                         <label for="t2">2</label>
@@ -61,7 +66,7 @@
                 </div>
                 <div class="form-group">
                     <label for="feedback">What do you like most about the city?</label>
-                    <textarea id="feedback" name="feedback" rows="4"></textarea>
+                    <textarea id="feedback" name="feedback" rows="4" required></textarea>
                 </div>
                 <div class="button-group">
                     <button type="button" class="back-btn">Back</button>
@@ -78,6 +83,7 @@
                 </div>
                 <div class="button-group">
                     <button type="button" class="back-btn">Back</button>
+                    <button type="button" id="clear-map-btn" class="del-btn">Clear Map</button>
                     <button type="submit">Submit Answers</button>
                 </div>
             </div>
