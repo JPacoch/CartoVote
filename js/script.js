@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // const supabaseUrl = 'VITE_SUPABASE_URL';
-    // const supabaseKey = 'VITE_SUPABASE_ANON_KEY';
-    const supabaseUrl = 'REDACTED_URL';
-    const supabaseKey = 'REDACTED_KEY';
+    const supabaseUrl = 'VITE_SUPABASE_URL';
+    const supabaseKey = 'VITE_SUPABASE_ANON_KEY';
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
     const formData = {
@@ -19,6 +17,12 @@ document.addEventListener('DOMContentLoaded', () => {
         stages.forEach(stage => stage.classList.remove('active'));
         document.getElementById(`stage-${stageNumber}`).classList.add('active');
         currentStage = stageNumber;
+
+        const progressBar = document.getElementById('progress-bar');
+        if (progressBar) {
+            const progressMap = { 0: '0%', 1: '25%', 2: '50%', 3: '75%' };
+            progressBar.style.width = progressMap[stageNumber] || '0%';
+        }
 
         if (stageNumber === 3) {
             form.classList.add('wide-stage');
@@ -75,7 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 transportGroup.style.padding = '';
                 transportGroup.style.borderRadius = '';
 
-                // Validate radio group (checking first element checks the group)
                 if (!transportInputs[0].checkValidity()) {
                     void transportGroup.offsetWidth;
                     transportGroup.classList.add('input-error');
@@ -94,7 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 }
 
-                // Validate textarea
                 if (!feedbackInput.checkValidity()) {
                     void feedbackInput.offsetWidth;
                     feedbackInput.classList.add('input-error');
@@ -244,6 +246,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             stages.forEach(stage => stage.classList.remove('active'));
             successStage.classList.add('active');
+            const progressBar = document.getElementById('progress-bar');
+            if (progressBar) progressBar.style.width = '100%';
 
         } catch (error) {
             console.error('Submission error:', error);
