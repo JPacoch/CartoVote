@@ -12,5 +12,6 @@ A lightweight, browser-based spatial survey tool designed for municipal planning
 * **Frontend:** HTML5, CSS3
 * **Interactivity:** JavaScript (ES6+)
 * **Maps:** Leaflet.js
+* **Database** Supabase
 
 ## 📦 Installation & Usage
