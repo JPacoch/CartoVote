@@ -7,22 +7,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        .progress-container {
-            width: 100%;
-            background-color: #e0e0e0;
-            border-radius: 8px;
-            margin: 0 0 20px 0;
-            height: 12px;
-            overflow: hidden;
-        }
-        .progress-bar {
-            height: 100%;
-            background-color: #4CAF50;
-            width: 0%;
-            transition: width 0.4s ease;
-        }
-    </style>
 </head>
 <body>
     <div class="container">
@@ -81,6 +65,17 @@
                         <label for="t4">4</label>
                         <input type="radio" id="t5" name="transport" value="5">
                         <label for="t5">5 (Excellent)</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="parks-rating">How do you rate the city parks? <span id="parks-rating-val">(3)</span></label>
+                    <input type="range" id="parks-rating" name="parks-rating" min="1" max="5" value="3" step="1">
+                    <div class="slider-labels">
+                        <span>1</span>
+                        <span>2</span>
+                        <span>3</span>
+                        <span>4</span>
+                        <span>5</span>
                     </div>
                 </div>
                 <div class="form-group">

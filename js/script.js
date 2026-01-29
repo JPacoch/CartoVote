@@ -13,6 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const stages = document.querySelectorAll('.stage');
     const form = document.getElementById('questionnaire-form');
 
+    const parksRatingInput = document.getElementById('parks-rating');
+    const parksRatingVal = document.getElementById('parks-rating-val');
+    if (parksRatingInput && parksRatingVal) {
+        parksRatingInput.addEventListener('input', (e) => {
+            parksRatingVal.textContent = `(${e.target.value})`;
+        });
+    }
+
     function showStage(stageNumber) {
         stages.forEach(stage => stage.classList.remove('active'));
         document.getElementById(`stage-${stageNumber}`).classList.add('active');
@@ -69,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const transportRating = document.querySelector('input[name="transport"]:checked');
                 formData.feedback.transportRating = transportRating ? transportRating.value : null;
                 formData.feedback.likes = feedbackInput.value;
+                formData.feedback.parksRating = parksRatingInput ? parksRatingInput.value : null;
 
                 let isValid = true;
                 let firstInvalid = null;
@@ -203,6 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.feedback = {};
         formData.locations = [];
         form.reset();
+        if (parksRatingVal) parksRatingVal.textContent = '(3)';
         markers.forEach(marker => map.removeLayer(marker));
         markers.length = 0;
         successStage.classList.remove('active');
@@ -237,6 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         user_age: parseInt(formData.personal.age),
                         user_location: formData.personal.location,
                         transport_rating: formData.feedback.transportRating,
+                        parks_rating: formData.feedback.parksRating,
                         feedback_text: formData.feedback.likes,
                         selected_points: formData.locations
                     }
