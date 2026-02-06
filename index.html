@@ -17,58 +17,59 @@
             </div>
             <!-- Welcome Stage -->
             <div id="stage-0" class="stage active">
-                <h2>Welcome to GeoQuest!</h2>
-                <p>Thank you for participating in our survey about Bydgoszcz. Your feedback is valuable to us.</p>
-                <p>This survey has three short steps and should only take a few minutes to complete.</p>
-                <button type="button" class="next-btn">Begin</button>
+                <h2>Witamy!</h2>
+                <p>Twoja opinia ma realny wpływ na to, jak będą wyglądać nasze wspólne przestrzenie. Wypełniając tę geoankietę, pomagasz nam zebrać dane, które przekażemy decydentom i planistom.</p>
+                <p>Dbamy o Twoją prywatność, dlatego informujemy, że administratorem Twoich danych jest BRM. Zebrane informacje, w tym wskazane przez Ciebie lokalizacje, przetwarzamy wyłącznie w celu opracowania zbiorczego raportu o potrzebach mieszkańców Bydgoszczy. Wszystkie analizy publikujemy w formie zanonimizowanych statystyk, co oznacza, że Twoje konkretne odpowiedzi pozostają bezpieczne i nie będą powiązane z Twoją tożsamością w publicznych zestawieniach. Masz pełne prawo do wglądu w swoje dane oraz ich usunięcia.</p>
+                <p>Klikając przycisk poniżej, wyrażasz zgodę na udział w badaniu i przetwarzanie danych zgodnie z naszą polityką prywatności. Dziękujemy za Twój czas i zaangażowanie!</p>
+                <button type="button" class="next-btn">Dalej</button>
             </div>
 
             <!-- Stage 1: Personal Information -->
             <div id="stage-1" class="stage">
-                <h2>Step 1: About You</h2>
+                <h2>Część 1: Profil</h2>
                 <div class="form-group">
-                    <label for="name">Your Name:</label>
+                    <label for="name">Imię:</label>
                     <input type="text" id="name" name="name" required>
                 </div>
                 <div class="form-group">
-                    <label for="age">Your Age:</label>
+                    <label for="age">Wiek:</label>
                     <input type="number" id="age" name="age" min="1" max="99" required>
                 </div>
                 <div class="form-group">
-                    <label for="location">Your Location (e.g., neighborhood):</label>
+                    <label for="location">Osiedle:</label>
                     <select id="location" name="location" required>
-                        <option value="" disabled selected>Select your neighborhood</option>
-                        <option value="Option A">Option A</option>
-                        <option value="Option B">Option B</option>
-                        <option value="Option C">Option C</option>
+                        <option value="" disabled selected>Wybierz osiedle</option>
+                        <option value="Option A">Opcja A</option>
+                        <option value="Option B">Opcja B</option>
+                        <option value="Option C">Opcja C</option>
                     </select>
                 </div>
                 <div class="button-group">
-                    <button type="button" class="back-btn">Back</button>
-                    <button type="button" class="next-btn">Next</button>
+                    <button type="button" class="back-btn">Powrót</button>
+                    <button type="button" class="next-btn">Dalej</button>
                 </div>
             </div>
 
             <!-- Stage 2: City Feedback -->
             <div id="stage-2" class="stage">
-                <h2>Step 2: About Bydgoszcz</h2>
+                <h2>Część 2: O Bydgoszczy</h2>
                 <div class="form-group">
-                    <label>How do you rate the public transport?</label>
+                    <label>Jak oceniasz zbiorkom</label>
                     <div class="radio-group">
                         <input type="radio" id="t1" name="transport" value="1" required>
-                        <label for="t1">1 (Poor)</label>
+                        <label for="t1">1 (Źle)</label>
                         <input type="radio" id="t2" name="transport" value="2">
                         <label for="t2">2</label>
                         <input type="radio" id="t3" name="transport" value="3">
-                        <label for="t3">3 (Average)</label>
+                        <label for="t3">3 (Średnio)</label>
                         <input type="radio" id="t4" name="transport" value="4">
                         <label for="t4">4</label>
                         <input type="radio" id="t5" name="transport" value="5">
-                        <label for="t5">5 (Excellent)</label>
+                        <label for="t5">5 (Wspaniale)</label>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="parks-rating">How do you rate the city parks? <span id="parks-rating-val">(3)</span></label>
+                    <label for="parks-rating">Jak oceniasz parki miejskie?<span id="parks-rating-val">(3)</span></label>
                     <input type="range" id="parks-rating" name="parks-rating" min="1" max="5" value="3" step="1">
                     <div class="slider-labels">
                         <span>1</span>
@@ -79,34 +80,34 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="feedback">What do you like most about the city?</label>
+                    <label for="feedback">Co myślisz o mieście?</label>
                     <textarea id="feedback" name="feedback" rows="4" required></textarea>
                 </div>
                 <div class="button-group">
-                    <button type="button" class="back-btn">Back</button>
-                    <button type="button" class="next-btn">Next</button>
+                    <button type="button" class="back-btn">Powrót</button>
+                    <button type="button" class="next-btn">Dalej</button>
                 </div>
             </div>
 
             <!-- Stage 3: Map Question -->
             <div id="stage-3" class="stage">
-                <h2>Step 3: Best Points in the City</h2>
+                <h2>Część 3: Nasadzenia drzew</h2>
                 <div class="form-group">
-                    <label>Select the best points in the city on the map:</label>
+                    <label>Zaznacz preferowane miejsca nasadzeń:</label>
                     <div id="map"></div>
                 </div>
                 <div class="button-group">
-                    <button type="button" class="back-btn">Back</button>
-                    <button type="button" id="clear-map-btn" class="del-btn">Clear Map</button>
-                    <button type="submit">Submit Answers</button>
+                    <button type="button" class="back-btn">Powrót</button>
+                    <button type="button" id="clear-map-btn" class="del-btn">Wyczyść</button>
+                    <button type="submit">Prześlij ankietę</button>
                 </div>
             </div>
 
             <!-- Success Stage -->
             <div id="success-stage" class="stage" style="text-align: center; padding-top: 20px;">
-                <h2>Thank You!</h2>
-                <p>Your feedback for Bydgoszcz has been recorded.</p>
-                <button type="button" id="restart-btn" class="next-btn" style="margin-top: 20px;">Submit Another</button>
+                <h2>Dziękujemy!</h2>
+                <p>Twoje odpowiedzi zostały zapisane.</p>
+                <button type="button" id="restart-btn" class="next-btn" style="margin-top: 20px;">Wypełnij ponownie</button>
             </div>
         </form>
     </div>
@@ -119,11 +120,11 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-brand">GeoQuest</div>
-            <p class="footer-text">Empowering communities through geospatial feedback</p>
+            <p class="footer-text">Placeholder</p>
             <div class="footer-links">
-                <a href="#" class="footer-link">Privacy Policy</a>
-                <a href="#" class="footer-link">Terms of Service</a>
-                <a href="#" class="footer-link">Contact</a>
+                <a href="#" class="footer-link">Polityka Prywatności</a>
+                <a href="#" class="footer-link">Bydgoski Ruch Miejski</a>
+                <a href="#" class="footer-link">Kontakt</a>
             </div>
         </div>
     </footer>
