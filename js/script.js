@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const supabaseUrl = 'VITE_SUPABASE_URL';
-    const supabaseKey = 'VITE_SUPABASE_ANON_KEY';
+    const supabaseUrl = 'SUPABASE_URL';
+    const supabaseKey = 'SUPABASE_ANON_KEY';
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
     const formData = {
@@ -27,9 +27,12 @@ document.addEventListener('DOMContentLoaded', () => {
         currentStage = stageNumber;
 
         const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
         if (progressBar) {
             const progressMap = { 0: '0%', 1: '25%', 2: '50%', 3: '75%' };
-            progressBar.style.width = progressMap[stageNumber] || '0%';
+            const percentage = progressMap[stageNumber] || '0%';
+            progressBar.style.width = percentage;
+            if (progressText) progressText.textContent = percentage;
         }
 
         if (stageNumber === 3) {
@@ -40,8 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     function setPolishValidity(input) {
-        input.setCustomValidity(""); 
-        
+        input.setCustomValidity("");
+
         if (!input.validity.valid) {
             if (input.validity.valueMissing) {
                 input.setCustomValidity("Proszę wypełnić to pole.");
@@ -62,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputsToTranslate = document.querySelectorAll('input, select, textarea');
     inputsToTranslate.forEach(input => {
         input.addEventListener('invalid', () => setPolishValidity(input));
-        input.addEventListener('input', () => input.setCustomValidity("")); 
+        input.addEventListener('input', () => input.setCustomValidity(""));
     });
 
     document.querySelectorAll('.next-btn').forEach(button => {
@@ -170,8 +173,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const customIcon = L.divIcon({
         className: 'custom-marker-wrapper',
         html: '<div class="custom-marker-icon"></div>',
-        iconSize: [30, 30],
-        iconAnchor: [15, 15]
+        iconSize: [24, 24],
+        iconAnchor: [12, 12]
     });
 
     map.on('click', (e) => {
@@ -240,6 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (parksRatingVal) parksRatingVal.textContent = '(3)';
         markers.forEach(marker => map.removeLayer(marker));
         markers.length = 0;
+        map.setView(bydgoszczCoords, 13);
         successStage.classList.remove('active');
         showStage(0);
     });
