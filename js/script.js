@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const supabaseUrl = 'VITE_SUPABASE_URL';
-    const supabaseKey = 'VITE_SUPABASE_ANON_KEY';
+    // const supabaseUrl = 'VITE_SUPABASE_URL';
+    // const supabaseKey = 'VITE_SUPABASE_ANON_KEY';
+    const supabaseUrl = 'https://ngrmrrhpfukztfgrovfg.supabase.co';
+    const supabaseKey = 'sb_publishable_d-2PB-X6xwiBMzyx9JnPqQ_Qu8PCL-_';
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
     const formData = {
@@ -134,7 +136,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const bydgoszczCoords = [53.1235, 18.0084];
     const map = L.map('map').setView(bydgoszczCoords, 13);
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    // Modern dark theme map tiles with better visual appeal
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
         subdomains: 'abcd',
         maxZoom: 20
@@ -194,9 +197,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function showNotification(message, duration = 4000) {
         notificationMessage.textContent = message;
         notificationToast.classList.add('active');
-        
+
         if (notificationTimeout) clearTimeout(notificationTimeout);
-        
+
         notificationTimeout = setTimeout(() => {
             notificationToast.classList.remove('active');
         }, duration);
