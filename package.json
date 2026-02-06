@@ -1,0 +1,7 @@
+{
+  "name": "CartoVote",
+  "version": "0.1",
+  "scripts": {
+    "build": "sed -i \"s|SUPABASE_URL|$SUPABASE_URL|g\" js/script.js && sed -i \"s|SUPABASE_ANON_KEY|$SUPABASE_ANON_KEY|g\" js/script.js && echo 'Keys injected successfully!'"
+  }
+}
