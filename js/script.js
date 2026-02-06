@@ -39,6 +39,31 @@ document.addEventListener('DOMContentLoaded', () => {
             form.classList.remove('wide-stage');
         }
     }
+    function setPolishValidity(input) {
+        input.setCustomValidity(""); 
+        
+        if (!input.validity.valid) {
+            if (input.validity.valueMissing) {
+                input.setCustomValidity("Proszę wypełnić to pole.");
+            } else if (input.validity.typeMismatch || input.validity.badInput) {
+                if (input.type === 'number') {
+                    input.setCustomValidity("Proszę wprowadzić poprawną liczbę.");
+                } else {
+                    input.setCustomValidity("Wprowadź poprawne dane.");
+                }
+            } else if (input.validity.rangeUnderflow) {
+                input.setCustomValidity(`Wartość musi być większa lub równa ${input.min}.`);
+            } else if (input.validity.rangeOverflow) {
+                input.setCustomValidity(`Wartość musi być mniejsza lub równa ${input.max}.`);
+            }
+        }
+    }
+
+    const inputsToTranslate = document.querySelectorAll('input, select, textarea');
+    inputsToTranslate.forEach(input => {
+        input.addEventListener('invalid', () => setPolishValidity(input));
+        input.addEventListener('input', () => input.setCustomValidity("")); 
+    });
 
     document.querySelectorAll('.next-btn').forEach(button => {
         button.addEventListener('click', () => {
@@ -115,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 if (!isValid) {
-                    showNotification('Please answer all questions to proceed.');
+                    showNotification('Wypełnij wszystkie odpowiedzi!');
                     if (firstInvalid) firstInvalid.reportValidity();
                     return;
                 }
@@ -134,7 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const bydgoszczCoords = [53.1235, 18.0084];
     const map = L.map('map').setView(bydgoszczCoords, 13);
 
-    // Modern dark theme map tiles with better visual appeal
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
         subdomains: 'abcd',
@@ -161,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const removeBtn = document.createElement('button');
         removeBtn.type = 'button';
         removeBtn.className = 'remove-marker-btn';
-        removeBtn.innerText = 'Remove Point';
+        removeBtn.innerText = 'Usuń punkt';
         removeBtn.onclick = () => {
             map.removeLayer(marker);
             const index = markers.indexOf(marker);
@@ -228,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
             mapDiv.classList.remove('input-error');
             void mapDiv.offsetWidth;
             mapDiv.classList.add('input-error');
-            showNotification('Please select at least one point on the map.');
+            showNotification('Wybierz przynajmniej jeden punkt na mapie!');
             return;
         }
 
