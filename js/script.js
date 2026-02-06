@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // const supabaseUrl = 'VITE_SUPABASE_URL';
-    // const supabaseKey = 'VITE_SUPABASE_ANON_KEY';
-    const supabaseUrl = 'https://ngrmrrhpfukztfgrovfg.supabase.co';
-    const supabaseKey = 'REMOVED_TEXT';
+    const supabaseUrl = 'VITE_SUPABASE_URL';
+    const supabaseKey = 'VITE_SUPABASE_ANON_KEY';
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
     const formData = {
