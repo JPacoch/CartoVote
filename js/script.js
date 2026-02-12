@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // const supabaseUrl = 'SUPABASE_URL';
-    // const supabaseKey = 'SUPABASE_ANON_KEY';
-    const supabaseUrl = 'REMOVED';
-    const supabaseKey = 'REMOVED';
+    const supabaseUrl = 'SUPABASE_URL';
+    const supabaseKey = 'SUPABASE_ANON_KEY';
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
     const formData = {
@@ -33,18 +31,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const stages = document.querySelectorAll('.stage');
     const form = document.getElementById('questionnaire-form');
 
-    // -- Map Variables --
     let mapPlantings = null;
     let mapResidence = null;
     const markersPlantings = [];
     let markerResidence = null;
     const bydgoszczCoords = [53.1235, 18.0084];
 
-    // -- UI Elements --
     const plantingMapId = 'map-plantings';
     const residenceMapId = 'map-residence';
 
-    // -- Dynamic Rating Display --
     function setupRatingDisplay(inputId, displayId) {
         const input = document.getElementById(inputId);
         const display = document.getElementById(displayId);
@@ -57,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupRatingDisplay('trees-rating', 'trees-rating-val');
     setupRatingDisplay('summer-rating', 'summer-rating-val');
 
-    // -- Stage Navigation --
+
     function showStage(stageNumber) {
         stages.forEach(stage => stage.classList.remove('active'));
         const targetStage = document.getElementById(`stage-${stageNumber}`);
@@ -75,7 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (progressText) progressText.textContent = percentage;
         }
 
-        // Map sizing fix when stage becomes visible
         if (stageNumber === 4) {
             form.classList.add('wide-stage');
             setTimeout(() => {
@@ -93,7 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // -- Input Validation Helpers --
     function setPolishValidity(input) {
         input.setCustomValidity("");
         if (!input.validity.valid) {
@@ -119,10 +112,9 @@ document.addEventListener('DOMContentLoaded', () => {
         input.addEventListener('input', () => input.setCustomValidity(""));
     });
 
-    // -- Navigation Event Listeners --
 
     document.querySelectorAll('.next-btn').forEach(button => {
-        if (button.id === 'restart-btn') return; // Skip restart button
+        if (button.id === 'restart-btn') return; 
 
         button.addEventListener('click', () => {
             if (validateCurrentStage()) {
@@ -134,23 +126,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.back-btn').forEach(button => {
         button.addEventListener('click', () => {
-            // Don't validate when going back
             showStage(currentStage - 1);
         });
     });
 
-    // -- Validation & Data Capture Logic --
 
     function validateCurrentStage() {
         let isValid = true;
         let firstInvalid = null;
         let stageInputs = [];
-        let groupContainers = []; // To clear styles on radio groups
+        let groupContainers = []; 
 
         const currentStageDiv = document.getElementById(`stage-${currentStage}`);
-        if (!currentStageDiv) return true; // Should not happen
+        if (!currentStageDiv) return true; 
 
-        // Reset previous error styles in this stage
+
         currentStageDiv.querySelectorAll('.input-error').forEach(el => {
             el.classList.remove('input-error');
             if (el.classList.contains('radio-group')) {
@@ -161,21 +151,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (currentStage === 0) {
-            return true; // Welcome stage
-        } else if (currentStage === 1) { // Personal
+            return true; 
+        } else if (currentStage === 1) {
             const age = document.getElementById('age');
             const gender = document.getElementById('gender');
             const education = document.getElementById('education');
             const district = document.getElementById('district');
             stageInputs = [age, gender, education, district];
-        } else if (currentStage === 2) { // City Feedback
+        } else if (currentStage === 2) { 
             const problem = document.querySelector('input[name="problem"]:checked');
             const problemGroup = document.querySelector('input[name="problem"]').closest('.radio-group');
 
             const benefitsChecked = document.querySelectorAll('input[name="benefits"]:checked');
             const benefitsGroup = document.querySelector('input[name="benefits"]').closest('.radio-group');
 
-            // Radio groups manual validation
             if (!problem) {
                 isValid = false;
                 markRadioGroupInvalid(problemGroup);
@@ -186,12 +175,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 markRadioGroupInvalid(benefitsGroup);
                 if (!firstInvalid) firstInvalid = benefitsGroup;
             }
-            // Sliders always have a value
-        } else if (currentStage === 3) { // Greenery
+        } else if (currentStage === 3) { 
             const greentime = document.getElementById('greentime');
             const transport = document.getElementById('transport');
             const feedback = document.getElementById('feedback');
-            stageInputs = [greentime, transport]; // feedback is optional
+            stageInputs = [greentime, transport];
 
             const whatNew = document.querySelector('input[name="what-new"]:checked');
             const whatNewGroup = document.querySelector('input[name="what-new"]').closest('.radio-group');
@@ -209,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 markRadioGroupInvalid(parkingGroup);
                 if (!firstInvalid) firstInvalid = parkingGroup;
             }
-        } else if (currentStage === 4) { // Planting Map
+        } else if (currentStage === 4) {
             if (formData.plantingLocations.length === 0) {
                 const mapDiv = document.getElementById('map-plantings');
                 mapDiv.classList.add('input-error');
@@ -217,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return false;
             }
             return true;
-        } else if (currentStage === 5) { // Residence Map
+        } else if (currentStage === 5) {
             if (!formData.residenceLocation) {
                 const mapDiv = document.getElementById('map-residence');
                 mapDiv.classList.add('input-error');
@@ -227,7 +215,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return true;
         }
 
-        // Standard Input validation
         stageInputs.forEach(input => {
             if (!input.checkValidity()) {
                 input.classList.add('input-error');
@@ -239,7 +226,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!isValid) {
             if (firstInvalid && firstInvalid.scrollIntoView) {
-                // firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' }); // Optional
                 if (firstInvalid.reportValidity) firstInvalid.reportValidity();
                 else showNotification("Uzupełnij brakujące pola.");
             } else {
@@ -277,7 +263,6 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.cityFeedback.problem = document.querySelector('input[name="problem"]:checked')?.value;
             formData.cityFeedback.treesRating = document.getElementById('trees-rating').value;
             formData.cityFeedback.summerRating = document.getElementById('summer-rating').value;
-            // Capture multiple values for benefits
             const benefitsChecked = document.querySelectorAll('input[name="benefits"]:checked');
             formData.cityFeedback.benefits = Array.from(benefitsChecked).map(cb => cb.value);
         } else if (currentStage === 3) {
@@ -287,11 +272,9 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.greenery.parking = document.querySelector('input[name="parking"]:checked')?.value;
             formData.greenery.feedback = document.getElementById('feedback').value;
         }
-        // Stage 4 & 5 data is captured on map interaction
     }
 
 
-    // -- Maps Logic --
 
     const customIcon = L.divIcon({
         className: 'custom-marker-wrapper',
@@ -308,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function initPlantingMap() {
-        if (mapPlantings) return; // Already initialized
+        if (mapPlantings) return;
 
         mapPlantings = L.map('map-plantings').setView(bydgoszczCoords, 13);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
@@ -324,7 +307,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const marker = L.marker([lat, lng], { icon: customIcon }).addTo(mapPlantings);
 
-            // Popup to remove
             const container = document.createElement('div');
             const removeBtn = document.createElement('button');
             removeBtn.type = 'button';
@@ -341,7 +323,6 @@ document.addEventListener('DOMContentLoaded', () => {
             container.appendChild(removeBtn);
             marker.bindPopup(container);
 
-            // Open popup immediately? No, allows adding multiple quickly.
 
             markersPlantings.push(marker);
             formData.plantingLocations.push(point);
@@ -362,7 +343,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('map-residence').classList.remove('input-error');
             const { lat, lng } = e.latlng;
 
-            // Only one marker allowed
             if (markerResidence) {
                 mapResidence.removeLayer(markerResidence);
             }
@@ -372,7 +352,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Clear Btns
     const clearPlantingsBtn = document.getElementById('clear-map-btn-plantings');
     if (clearPlantingsBtn) {
         clearPlantingsBtn.addEventListener('click', () => {
@@ -394,7 +373,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // -- Notifications --
     const notificationToast = document.getElementById('notification-toast');
     const notificationMessage = document.getElementById('notification-message');
     const notificationClose = document.getElementById('notification-close');
@@ -415,23 +393,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // -- Submission & Reset --
 
     const successStage = document.getElementById('success-stage');
     const restartBtn = document.getElementById('restart-btn');
 
     restartBtn.addEventListener('click', () => {
-        // Reset HTML Form
         form.reset();
 
-        // Reset Internal State
         formData.personal = { age: null, gender: null, education: null, district: null };
         formData.cityFeedback = { problem: null, treesRating: 3, summerRating: 3, benefits: [] };
         formData.greenery = { greentime: null, transport: null, whatNew: null, parking: null, feedback: null };
         formData.plantingLocations = [];
         formData.residenceLocation = null;
 
-        // Reset Maps
         markersPlantings.forEach(m => mapPlantings.removeLayer(m));
         markersPlantings.length = 0;
         if (markerResidence) {
@@ -439,13 +413,11 @@ document.addEventListener('DOMContentLoaded', () => {
             markerResidence = null;
         }
 
-        // Reset UI
         currentStage = 0;
         successStage.classList.remove('active');
         showStage(0);
         window.scrollTo(0, 0);
 
-        // Reset Sliders Display
         document.getElementById('trees-rating-val').textContent = '(3)';
         document.getElementById('summer-rating-val').textContent = '(3)';
     });
@@ -453,7 +425,6 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        // Final check usually matches stage 5 validation, but good to be safe
         if (!formData.residenceLocation) {
             showNotification('Błąd: Brak lokalizacji zamieszkania.');
             return;
@@ -467,9 +438,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            // Note: Data mapping MUST match Supabase table columns. 
-            // Since we don't control the table, we make a best effort guess based on typical patterns 
-            // or the previous code, but expanding it.
 
             const payload = {
                 user_age: parseInt(formData.personal.age),
