@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GeoQuest - Bydgoszcz</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
     <div class="container">
         <h1>GeoQuest - Bydgoszcz</h1>
@@ -19,9 +22,16 @@
             <!-- Welcome Stage -->
             <div id="stage-0" class="stage active">
                 <h2>Witamy!</h2>
-                <p>Twoja opinia ma realny wpływ na to, jak będą wyglądać nasze wspólne przestrzenie. Wypełniając tę geoankietę, pomagasz nam zebrać dane, które przekażemy decydentom i planistom.</p>
-                <p>Dbamy o Twoją prywatność, dlatego informujemy, że administratorem Twoich danych jest BRM. Zebrane informacje, w tym wskazane przez Ciebie lokalizacje, przetwarzamy wyłącznie w celu opracowania zbiorczego raportu o potrzebach mieszkańców Bydgoszczy. Wszystkie analizy publikujemy w formie zanonimizowanych statystyk, co oznacza, że Twoje konkretne odpowiedzi pozostają bezpieczne i nie będą powiązane z Twoją tożsamością w publicznych zestawieniach. Masz pełne prawo do wglądu w swoje dane oraz ich usunięcia.</p>
-                <p>Klikając przycisk poniżej, wyrażasz zgodę na udział w badaniu i przetwarzanie danych zgodnie z naszą polityką prywatności. Dziękujemy za Twój czas i zaangażowanie!</p>
+                <p>Twoja opinia ma realny wpływ na to, jak będą wyglądać nasze wspólne przestrzenie. Wypełniając tę
+                    geoankietę, pomagasz nam zebrać dane, które przekażemy decydentom i planistom.</p>
+                <p>Dbamy o Twoją prywatność, dlatego informujemy, że administratorem Twoich danych jest BRM. Zebrane
+                    informacje, w tym wskazane przez Ciebie lokalizacje, przetwarzamy wyłącznie w celu opracowania
+                    zbiorczego raportu o potrzebach mieszkańców Bydgoszczy. Wszystkie analizy publikujemy w formie
+                    zanonimizowanych statystyk, co oznacza, że Twoje konkretne odpowiedzi pozostają bezpieczne i nie
+                    będą powiązane z Twoją tożsamością w publicznych zestawieniach. Masz pełne prawo do wglądu w swoje
+                    dane oraz ich usunięcia.</p>
+                <p>Klikając przycisk poniżej, wyrażasz zgodę na udział w badaniu i przetwarzanie danych zgodnie z naszą
+                    polityką prywatności. Dziękujemy za Twój czas i zaangażowanie!</p>
                 <button type="button" class="next-btn">Dalej</button>
             </div>
 
@@ -29,20 +39,61 @@
             <div id="stage-1" class="stage">
                 <h2>Część 1: Profil</h2>
                 <div class="form-group">
-                    <label for="name">Imię:</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
                     <label for="age">Wiek:</label>
                     <input type="number" id="age" name="age" min="1" max="99" required>
                 </div>
                 <div class="form-group">
-                    <label for="location">Osiedle:</label>
-                    <select id="location" name="location" required>
+                    <label for="gender">Płeć</label>
+                    <select id="gender" name="gender" required>
+                        <option value="" disabled selected>Wybierz płeć</option>
+                        <option value="female">Kobieta</option>
+                        <option value="male">Mężczyzna</option>
+                        <option value="other">Inne</option>
+                        <option value="none">Preferuję nie odpowiadać</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="education">Wykształcenie</label>
+                    <select id="education" name="education" required>
+                        <option value="" disabled selected>Wybierz poziom wykształcenia</option>
+                        <option value="basic">Podstawowe</option>
+                        <option value="middle">Średnie</option>
+                        <option value="higher">Wyższe</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="district">Osiedle:</label>
+                    <select id="district" name="district" required>
                         <option value="" disabled selected>Wybierz osiedle</option>
-                        <option value="Option A">Opcja A</option>
-                        <option value="Option B">Opcja B</option>
-                        <option value="Option C">Opcja C</option>
+                        <option value="Bartodzieje">Bartodzieje</option>
+                        <option value="Bielawy">Bielawy</option>
+                        <option value="Błonie">Błonie</option>
+                        <option value="Bocianowo-Śródmieście-Stare Miasto">Bocianowo-Śródmieście-Stare Miasto</option>
+                        <option value="Brdyujście">Brdyujście</option>
+                        <option value="Bydgoszcz Wschód-Siernieczek">Bydgoszcz Wschód-Siernieczek</option>
+                        <option value="Czyżkówko">Czyżkówko</option>
+                        <option value="Flisy">Flisy</option>
+                        <option value="Glinki-Rupienica">Glinki-Rupienica</option>
+                        <option value="Górzyskowo">Górzyskowo</option>
+                        <option value="Jachcice">Jachcice</option>
+                        <option value="Kapuściska">Kapuściska</option>
+                        <option value="Leśne">Leśne</option>
+                        <option value="Łęgnowo">Łęgnowo</option>
+                        <option value="Łęgnowo Wieś">Łęgnowo Wieś</option>
+                        <option value="Miedzyń-Prądy">Miedzyń-Prądy</option>
+                        <option value="Nowy Fordon">Nowy Fordon</option>
+                        <option value="Okole">Okole</option>
+                        <option value="Osowa Góra">Osowa Góra</option>
+                        <option value="Piaski">Piaski</option>
+                        <option value="Smukała-Opławiec-Janowo">Smukała-Opławiec-Janowo</option>
+                        <option value="Stary Fordon">Stary Fordon</option>
+                        <option value="Szwederowo">Szwederowo</option>
+                        <option value="Tatrzańskie">Tatrzańskie</option>
+                        <option value="Terenów Nadwiślańskich">Terenów Nadwiślańskich</option>
+                        <option value="Wilczak-Jary">Wilczak-Jary</option>
+                        <option value="Wyżyny">Wyżyny</option>
+                        <option value="Wzgórze Wolności">Wzgórze Wolności</option>
+                        <option value="Zimne Wody-Czersko Polskie">Zimne Wody-Czersko Polskie</option>
                     </select>
                 </div>
                 <div class="button-group">
@@ -55,23 +106,22 @@
             <div id="stage-2" class="stage">
                 <h2>Część 2: O Bydgoszczy</h2>
                 <div class="form-group">
-                    <label>Jak oceniasz zbiorkom</label>
+                    <label>Jaki jest największy problem dotyczący zieleni miejskiej w Twojej okolicy?</label>
                     <div class="radio-group">
-                        <input type="radio" id="t1" name="transport" value="1" required>
-                        <label for="t1">1 (Źle)</label>
-                        <input type="radio" id="t2" name="transport" value="2">
-                        <label for="t2">2</label>
-                        <input type="radio" id="t3" name="transport" value="3">
-                        <label for="t3">3 (Średnio)</label>
-                        <input type="radio" id="t4" name="transport" value="4">
-                        <label for="t4">4</label>
-                        <input type="radio" id="t5" name="transport" value="5">
-                        <label for="t5">5 (Wspaniale)</label>
+                        <input type="radio" id="problem-t1" name="problem" value="Brak drzew przy chodnikach" required>
+                        <label for="problem-t1">Brak drzew przy chodnikach</label>
+                        <input type="radio" id="problem-t2" name="problem" value="Parki usytuowane są za daleko">
+                        <label for="problem-t2">Parki usytuowane są za daleko</label>
+                        <input type="radio" id="problem-t3" name="problem" value="Drzewa są zaniedbane">
+                        <label for="problem-t3">Drzewa są zaniedbane</label>
+                        <input type="radio" id="problem-t4" name="problem" value="Betonoza">
+                        <label for="problem-t4">"Betonoza"</label>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="parks-rating">Jak oceniasz parki miejskie?<span id="parks-rating-val">(3)</span></label>
-                    <input type="range" id="parks-rating" name="parks-rating" min="1" max="5" value="3" step="1">
+                    <label for="trees-rating">Jak oceniasz ogólną kondycję istniejących drzew w Twojej okolicy? (1 =
+                        obumierające/zaniedbane, 5 = zdrowe/piękne)<span id="trees-rating-val">(3)</span></label>
+                    <input type="range" id="trees-rating" name="trees-rating" min="1" max="5" value="3" step="1">
                     <div class="slider-labels">
                         <span>1</span>
                         <span>2</span>
@@ -81,8 +131,38 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="feedback">Co myślisz o mieście?</label>
-                    <textarea id="feedback" name="feedback" rows="4" required></textarea>
+                    <label for="summer-rating">Jak bardzo zgadzasz się ze stwierdzeniem: Podczas letnich upałów na moich
+                        codziennych trasach spacerowych w Bydgoszczy jest mnóstwo cienia.<span
+                            id="summer-rating-val">(3)</span></label>
+                    <input type="range" id="summer-rating" name="summer-rating" min="1" max="5" value="3" step="1">
+                    <div class="slider-labels">
+                        <span>1</span>
+                        <span>2</span>
+                        <span>3</span>
+                        <span>4</span>
+                        <span>5</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Które korzyści płynące z obecności drzew i zieleni miejskiej są dla Ciebie
+                        najważniejsze?</label>
+                    <div class="radio-group">
+                        <input type="checkbox" id="benefits-t1" name="benefits" value="Cień i schronienie w upalne dni">
+                        <label for="benefits-t1">Cień i schronienie w upalne dni</label>
+                        <input type="checkbox" id="benefits-t2" name="benefits" value="Zmniejszenie hałasu ulicznego">
+                        <label for="benefits-t2">Zmniejszenie hałasu ulicznego</label>
+                        <input type="checkbox" id="benefits-t3" name="benefits"
+                            value="Piękno wizualne i relaks psychiczny">
+                        <label for="benefits-t3">Piękno wizualne i relaks psychiczny</label>
+                        <input type="checkbox" id="benefits-t4" name="benefits" value="Poprawa jakości powietrza">
+                        <label for="benefits-t4">Poprawa jakości powietrza</label>
+                        <input type="checkbox" id="benefits-t5" name="benefits"
+                            value="Zapewnianie siedlisk dla ptaków i wiewiórek">
+                        <label for="benefits-t5">Zapewnianie siedlisk dla ptaków i wiewiórek</label>
+                        <input type="checkbox" id="benefits-t6" name="benefits"
+                            value="Pochłanianie wody deszczowej podczas burz">
+                        <label for="benefits-t6">Pochłanianie wody deszczowej podczas ulew</label>
+                    </div>
                 </div>
                 <div class="button-group">
                     <button type="button" class="back-btn">Powrót</button>
@@ -90,16 +170,87 @@
                 </div>
             </div>
 
-            <!-- Stage 3: Map Question -->
             <div id="stage-3" class="stage">
-                <h2>Część 3: Nasadzenia drzew</h2>
+                <h2>Część 3: O Zieleni</h2>
                 <div class="form-group">
-                    <label>Zaznacz preferowane miejsca nasadzeń:</label>
-                    <div id="map"></div>
+                    <label for="greentime">Ile czasu spędzasz w parkach miejskich lub lasach tygodniowo?</label>
+                    <select id="greentime" name="greentime" required>
+                        <option value="" disabled selected>Wybierz z podanych odpowiedzi</option>
+                        <option value="Rzadko">Rzadko</option>
+                        <option value="1-2 godziny">1-2 godziny</option>
+                        <option value="3-5 godzin">3-5 godzin</option>
+                        <option value="ponad 5 godzin">ponad 5 godzin</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="transport">Jaki jest Twój główny środek transportu w mieście?</label>
+                    <select id="transport" name="transport" required>
+                        <option value="" disabled selected>Wybierz z podanych odpowiedzi</option>
+                        <option value="pieszo">pieszo</option>
+                        <option value="rower">rower</option>
+                        <option value="transport publiczny">transport publiczny</option>
+                        <option value="samochód">samochód</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Jakiego rodzaju zieleni miejskiej chciałbyś widzieć więcej?</label>
+                    <div class="radio-group">
+                        <input type="radio" id="new-t1" name="what-new" value="Duże, majestatyczne drzewa" required>
+                        <label for="new-t1">Duże, majestatyczne drzewa</label>
+                        <input type="radio" id="new-t2" name="what-new" value="Niskie krzewy i łąki kwietne">
+                        <label for="new-t2">Niskie krzewy i łąki kwietne</label>
+                        <input type="radio" id="new-t3" name="what-new"
+                            value="Parki kieszonkowe z ławkami i małymi drzewami">
+                        <label for="new-t3">Parki kieszonkowe z ławkami i małymi drzewami</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Czy poparłbyś zastąpienie kilku miejsc parkingowych na swojej ulicy nowymi nasadzeniami
+                        drzew?</label>
+                    <div class="radio-group">
+                        <input type="radio" id="parking-t1" name="parking" value="Tak" required>
+                        <label for="parking-t1">Tak</label>
+                        <input type="radio" id="parking-t2" name="parking" value="Nie">
+                        <label for="parking-t2">Nie</label>
+                        <input type="radio" id="parking-t3" name="parking"
+                            value="Tylko jeśli znaleziono by zastępcze m. parkingowe">
+                        <label for="parking-t3">Tylko jeśli znaleziono by zastępcze m. parkingowe</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="feedback">Czy jest jakaś konkretna ulica lub plac w Bydgoszczy, który Twoim zdaniem jest
+                        „wyspą ciepła” i wymaga pilnej uwagi?</label>
+                    <textarea id="feedback" name="feedback" rows="4"></textarea>
                 </div>
                 <div class="button-group">
                     <button type="button" class="back-btn">Powrót</button>
-                    <button type="button" id="clear-map-btn" class="del-btn">Wyczyść</button>
+                    <button type="button" class="next-btn">Dalej</button>
+                </div>
+            </div>
+            <!-- Stage 4: Map Question -->
+            <div id="stage-4" class="stage">
+                <h2>Część 4: Nasadzenia drzew</h2>
+                <div class="form-group">
+                    <label>Zaznacz preferowane miejsca nasadzeń:</label>
+                    <div id="map-plantings"></div>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="back-btn">Powrót</button>
+                    <button type="button" id="clear-map-btn-plantings" class="del-btn">Wyczyść</button>
+                    <button type="button" class="next-btn">Dalej</button>
+                </div>
+            </div>
+
+            <!-- Stage 5: Map Question -->
+            <div id="stage-5" class="stage">
+                <h2>Część 5: Zamieszkanie</h2>
+                <div class="form-group">
+                    <label>Zaznacz przybliżone miejsce zamieszkania:</label>
+                    <div id="map-residence"></div>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="back-btn">Powrót</button>
+                    <button type="button" id="clear-map-btn-residence" class="del-btn">Wyczyść</button>
                     <button type="submit">Prześlij ankietę</button>
                 </div>
             </div>
@@ -108,7 +259,8 @@
             <div id="success-stage" class="stage" style="text-align: center; padding-top: 20px;">
                 <h2>Dziękujemy!</h2>
                 <p>Twoje odpowiedzi zostały zapisane.</p>
-                <button type="button" id="restart-btn" class="next-btn" style="margin-top: 20px;">Wypełnij ponownie</button>
+                <button type="button" id="restart-btn" class="next-btn" style="margin-top: 20px;">Wypełnij
+                    ponownie</button>
             </div>
         </form>
     </div>
@@ -130,8 +282,10 @@
         </div>
     </footer>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="js/script.js"></script>
 </body>
+
 </html>
