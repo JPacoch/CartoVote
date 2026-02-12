@@ -108,15 +108,15 @@
                 <div class="form-group">
                     <label>Jaki jest największy problem dotyczący zieleni miejskiej w Twojej okolicy?</label>
                     <div class="radio-group">
-                        <input type="radio" id="problem-t1" name="problem" value="1" required>
+                        <input type="radio" id="problem-t1" name="problem" value="Brak drzew przy chodnikach" required>
                         <label for="problem-t1">Brak drzew przy chodnikach</label>
-                        <input type="radio" id="problem-t2" name="problem" value="2">
+                        <input type="radio" id="problem-t2" name="problem" value="Parki usytuowane są za daleko">
                         <label for="problem-t2">Parki usytuowane są za daleko</label>
-                        <input type="radio" id="problem-t3" name="problem" value="3">
+                        <input type="radio" id="problem-t3" name="problem" value="Drzewa są zaniedbane">
                         <label for="problem-t3">Drzewa są zaniedbane</label>
-                        <input type="radio" id="problem-t4" name="problem" value="4">
+                        <input type="radio" id="problem-t4" name="problem" value="Betonoza">
                         <label for="problem-t4">Betonoza</label>
-                        <input type="radio" id="problem-t5" name="problem" value="5">
+                        <input type="radio" id="problem-t5" name="problem" value="5 (Wspaniale)">
                         <label for="problem-t5">5 (Wspaniale)</label>
                     </div>
                 </div>
@@ -149,17 +149,20 @@
                     <label>Które korzyści płynące z obecności drzew i zieleni miejskiej są dla Ciebie
                         najważniejsze?</label>
                     <div class="radio-group">
-                        <input type="checkbox" id="benefits-t1" name="benefits" value="1">
+                        <input type="checkbox" id="benefits-t1" name="benefits" value="Cień i schronienie w upalne dni">
                         <label for="benefits-t1">Cień i schronienie w upalne dni</label>
-                        <input type="checkbox" id="benefits-t2" name="benefits" value="2">
+                        <input type="checkbox" id="benefits-t2" name="benefits" value="Zmniejszenie hałasu ulicznego">
                         <label for="benefits-t2">Zmniejszenie hałasu ulicznego</label>
-                        <input type="checkbox" id="benefits-t3" name="benefits" value="3">
+                        <input type="checkbox" id="benefits-t3" name="benefits"
+                            value="Piękno wizualne i relaks psychiczny">
                         <label for="benefits-t3">Piękno wizualne i relaks psychiczny</label>
-                        <input type="checkbox" id="benefits-t4" name="benefits" value="4">
+                        <input type="checkbox" id="benefits-t4" name="benefits" value="Poprawa jakości powietrza">
                         <label for="benefits-t4">Poprawa jakości powietrza</label>
-                        <input type="checkbox" id="benefits-t5" name="benefits" value="5">
+                        <input type="checkbox" id="benefits-t5" name="benefits"
+                            value="Zapewnianie siedlisk dla ptaków i wiewiórek">
                         <label for="benefits-t5">Zapewnianie siedlisk dla ptaków i wiewiórek</label>
-                        <input type="checkbox" id="benefits-t6" name="benefits" value="6">
+                        <input type="checkbox" id="benefits-t6" name="benefits"
+                            value="Pochłanianie wody deszczowej podczas burz">
                         <label for="benefits-t6">Pochłanianie wody deszczowej podczas burz</label>
                     </div>
                 </div>
@@ -175,30 +178,31 @@
                     <label for="greentime">Ile czasu spędzasz w parkach miejskich lub lasach tygodniowo?</label>
                     <select id="greentime" name="greentime" required>
                         <option value="" disabled selected>Wybierz z podanych odpowiedzi</option>
-                        <option value="rzadko">Rzadko</option>
-                        <option value="12hours">1-2 godziny</option>
-                        <option value="35hours">3-5 godzin</option>
-                        <option value="5morehours">ponad 5 godzin</option>
+                        <option value="Rzadko">Rzadko</option>
+                        <option value="1-2 godziny">1-2 godziny</option>
+                        <option value="3-5 godzin">3-5 godzin</option>
+                        <option value="ponad 5 godzin">ponad 5 godzin</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="transport">Jaki jest Twój główny środek transportu w mieście?</label>
                     <select id="transport" name="transport" required>
                         <option value="" disabled selected>Wybierz z podanych odpowiedzi</option>
-                        <option value="walk">pieszo</option>
-                        <option value="bike">rower</option>
-                        <option value="zbiorkom">transport publiczny</option>
-                        <option value="car">samochód</option>
+                        <option value="pieszo">pieszo</option>
+                        <option value="rower">rower</option>
+                        <option value="transport publiczny">transport publiczny</option>
+                        <option value="samochód">samochód</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Jakiego rodzaju zieleni miejskiej chciałbyś widzieć więcej?</label>
                     <div class="radio-group">
-                        <input type="radio" id="new-t1" name="what-new" value="1" required>
+                        <input type="radio" id="new-t1" name="what-new" value="Duże, majestatyczne drzewa" required>
                         <label for="new-t1">Duże, majestatyczne drzewa</label>
-                        <input type="radio" id="new-t2" name="what-new" value="2">
+                        <input type="radio" id="new-t2" name="what-new" value="Niskie krzewy i łąki kwietne">
                         <label for="new-t2">Niskie krzewy i łąki kwietne</label>
-                        <input type="radio" id="new-t3" name="what-new" value="3">
+                        <input type="radio" id="new-t3" name="what-new"
+                            value="Parki kieszonkowe z ławkami i małymi drzewami">
                         <label for="new-t3">Parki kieszonkowe z ławkami i małymi drzewami</label>
                     </div>
                 </div>
@@ -206,11 +210,12 @@
                     <label>Czy poparłbyś zastąpienie kilku miejsc parkingowych na swojej ulicy nowymi nasadzeniami
                         drzew?</label>
                     <div class="radio-group">
-                        <input type="radio" id="parking-t1" name="parking" value="1" required>
+                        <input type="radio" id="parking-t1" name="parking" value="Tak" required>
                         <label for="parking-t1">Tak</label>
-                        <input type="radio" id="parking-t2" name="parking" value="2">
+                        <input type="radio" id="parking-t2" name="parking" value="Nie">
                         <label for="parking-t2">Nie</label>
-                        <input type="radio" id="parking-t3" name="parking" value="3">
+                        <input type="radio" id="parking-t3" name="parking"
+                            value="Tylko jeśli znaleziono by zastępcze m. parkingowe">
                         <label for="parking-t3">Tylko jeśli znaleziono by zastępcze m. parkingowe</label>
                     </div>
                 </div>

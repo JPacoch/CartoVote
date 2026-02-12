@@ -421,7 +421,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const restartBtn = document.getElementById('restart-btn');
 
     restartBtn.addEventListener('click', () => {
-        location.reload(); // Simplest way to reset everything cleanly
+        // Reset HTML Form
+        form.reset();
+
+        // Reset Internal State
+        formData.personal = { age: null, gender: null, education: null, district: null };
+        formData.cityFeedback = { problem: null, treesRating: 3, summerRating: 3, benefits: [] };
+        formData.greenery = { greentime: null, transport: null, whatNew: null, parking: null, feedback: null };
+        formData.plantingLocations = [];
+        formData.residenceLocation = null;
+
+        // Reset Maps
+        markersPlantings.forEach(m => mapPlantings.removeLayer(m));
+        markersPlantings.length = 0;
+        if (markerResidence) {
+            mapResidence.removeLayer(markerResidence);
+            markerResidence = null;
+        }
+
+        // Reset UI
+        currentStage = 0;
+        successStage.classList.remove('active');
+        showStage(0);
+        window.scrollTo(0, 0);
+
+        // Reset Sliders Display
+        document.getElementById('trees-rating-val').textContent = '(3)';
+        document.getElementById('summer-rating-val').textContent = '(3)';
     });
 
     form.addEventListener('submit', async (e) => {
@@ -463,7 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 heat_island_feedback: formData.greenery.feedback,
 
                 planting_locations: formData.plantingLocations,
-                residence_location: formData.residenceLocation 
+                residence_location: formData.residenceLocation
             };
 
             const { data, error } = await supabaseClient
