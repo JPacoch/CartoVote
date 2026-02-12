@@ -760,6 +760,13 @@ button.remove-marker-btn:hover {
     transform: scale(1.05);
 }
 
+.simple-line {
+  border: 0;   
+  height: 1px;        
+  background: #ccc;    
+  margin: 20px 0;      
+}
+
 /* ========================================
    NOTIFICATIONS
    ======================================== */

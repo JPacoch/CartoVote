@@ -42,8 +42,9 @@
                     <label for="age">Wiek:</label>
                     <input type="number" id="age" name="age" min="1" max="99" required>
                 </div>
+                <hr class="simple-line">
                 <div class="form-group">
-                    <label for="gender">Płeć</label>
+                    <label for="gender">Płeć:</label>
                     <select id="gender" name="gender" required>
                         <option value="" disabled selected>Wybierz płeć</option>
                         <option value="female">Kobieta</option>
@@ -52,8 +53,9 @@
                         <option value="none">Preferuję nie odpowiadać</option>
                     </select>
                 </div>
+                <hr class="simple-line">
                 <div class="form-group">
-                    <label for="education">Wykształcenie</label>
+                    <label for="education">Wykształcenie:</label>
                     <select id="education" name="education" required>
                         <option value="" disabled selected>Wybierz poziom wykształcenia</option>
                         <option value="basic">Podstawowe</option>
@@ -61,8 +63,9 @@
                         <option value="higher">Wyższe</option>
                     </select>
                 </div>
+                <hr class="simple-line">
                 <div class="form-group">
-                    <label for="district">Osiedle:</label>
+                    <label for="district">Osiedle zamieszkania:</label>
                     <select id="district" name="district" required>
                         <option value="" disabled selected>Wybierz osiedle</option>
                         <option value="Bartodzieje">Bartodzieje</option>
@@ -104,7 +107,7 @@
 
             <!-- Stage 2: City Feedback -->
             <div id="stage-2" class="stage">
-                <h2>Część 2: O Bydgoszczy</h2>
+                <h2>Część 2: O zieleni I</h2>
                 <div class="form-group">
                     <label>Jaki jest największy problem dotyczący zieleni miejskiej w Twojej okolicy?</label>
                     <div class="radio-group">
@@ -115,12 +118,15 @@
                         <input type="radio" id="problem-t3" name="problem" value="Drzewa są zaniedbane">
                         <label for="problem-t3">Drzewa są zaniedbane</label>
                         <input type="radio" id="problem-t4" name="problem" value="Betonoza">
-                        <label for="problem-t4">"Betonoza"</label>
+                        <label for="problem-t4">"Betonoza" (zastępowanie trawników i drzew kostką lub asfaltem)</label>
+                        <input type="radio" id="problem-t5" name="problem" value="Niska estetyka">
+                        <label for="problem-t5">Niska estetyka</label>
                     </div>
                 </div>
+                <hr class="simple-line">
                 <div class="form-group">
                     <label for="trees-rating">Jak oceniasz ogólną kondycję istniejących drzew w Twojej okolicy? (1 =
-                        obumierające/zaniedbane, 5 = zdrowe/piękne)<span id="trees-rating-val">(3)</span></label>
+                        obumierające/zaniedbane, 5 = zdrowe/piękne)</label>
                     <input type="range" id="trees-rating" name="trees-rating" min="1" max="5" value="3" step="1">
                     <div class="slider-labels">
                         <span>1</span>
@@ -130,10 +136,11 @@
                         <span>5</span>
                     </div>
                 </div>
+                <hr class="simple-line">
                 <div class="form-group">
                     <label for="summer-rating">Jak bardzo zgadzasz się ze stwierdzeniem: Podczas letnich upałów na moich
-                        codziennych trasach spacerowych w Bydgoszczy jest mnóstwo cienia.<span
-                            id="summer-rating-val">(3)</span></label>
+                        codziennych trasach spacerowych w Bydgoszczy jest mnóstwo cienia. (1 =
+                        nie zgadzam się, 5 = zgadzam się)</label>
                     <input type="range" id="summer-rating" name="summer-rating" min="1" max="5" value="3" step="1">
                     <div class="slider-labels">
                         <span>1</span>
@@ -143,6 +150,7 @@
                         <span>5</span>
                     </div>
                 </div>
+                <hr class="simple-line">
                 <div class="form-group">
                     <label>Które korzyści płynące z obecności drzew i zieleni miejskiej są dla Ciebie
                         najważniejsze?</label>
@@ -160,7 +168,7 @@
                             value="Zapewnianie siedlisk dla ptaków i wiewiórek">
                         <label for="benefits-t5">Zapewnianie siedlisk dla ptaków i wiewiórek</label>
                         <input type="checkbox" id="benefits-t6" name="benefits"
-                            value="Pochłanianie wody deszczowej podczas burz">
+                            value="Pochłanianie wody deszczowej podczas ulew">
                         <label for="benefits-t6">Pochłanianie wody deszczowej podczas ulew</label>
                     </div>
                 </div>
@@ -171,12 +179,12 @@
             </div>
 
             <div id="stage-3" class="stage">
-                <h2>Część 3: O Zieleni</h2>
+                <h2>Część 3: O zieleni II</h2>
                 <div class="form-group">
                     <label for="greentime">Ile czasu spędzasz w parkach miejskich lub lasach tygodniowo?</label>
                     <select id="greentime" name="greentime" required>
                         <option value="" disabled selected>Wybierz z podanych odpowiedzi</option>
-                        <option value="Rzadko">Rzadko</option>
+                        <option value="Rzadko">mniej niż 1 godzina</option>
                         <option value="1-2 godziny">1-2 godziny</option>
                         <option value="3-5 godzin">3-5 godzin</option>
                         <option value="ponad 5 godzin">ponad 5 godzin</option>
@@ -202,6 +210,8 @@
                         <input type="radio" id="new-t3" name="what-new"
                             value="Parki kieszonkowe z ławkami i małymi drzewami">
                         <label for="new-t3">Parki kieszonkowe z ławkami i małymi drzewami</label>
+                        <input type="radio" id="new-t4" name="what-new" value="Ogrody społecznościowe">
+                        <label for="new-t4">Ogrody społecznościowe</label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -213,8 +223,8 @@
                         <input type="radio" id="parking-t2" name="parking" value="Nie">
                         <label for="parking-t2">Nie</label>
                         <input type="radio" id="parking-t3" name="parking"
-                            value="Tylko jeśli znaleziono by zastępcze m. parkingowe">
-                        <label for="parking-t3">Tylko jeśli znaleziono by zastępcze m. parkingowe</label>
+                            value="Tylko jeśli wyznaczono by inne miejsce parkingowe">
+                        <label for="parking-t3">Tylko jeśli wyznaczono by inne miejsce parkingowe</label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -273,11 +283,11 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-brand">GeoQuest</div>
-            <p class="footer-text">Placeholder</p>
+            <!-- <p class="footer-text"></p> -->
             <div class="footer-links">
                 <a href="#" class="footer-link">Polityka Prywatności</a>
-                <a href="#" class="footer-link">Bydgoski Ruch Miejski</a>
-                <a href="#" class="footer-link">Kontakt</a>
+                <a href="https://bydgoskiruchmiejski.pl/" class="footer-link">Bydgoski Ruch Miejski</a>
+                <a href="https://www.jakubpacocha.com/" class="footer-link">Kontakt</a>
             </div>
         </div>
     </footer>

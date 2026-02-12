@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let mapResidence = null;
     const markersPlantings = [];
     let markerResidence = null;
-    const bydgoszczCoords = [53.1235, 18.0084];
+    const bydgoszczCoords = [53.12397889906925, 18.058089720648695];
 
     const plantingMapId = 'map-plantings';
     const residenceMapId = 'map-residence';
