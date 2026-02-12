@@ -1,50 +1,101 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const supabaseUrl = 'SUPABASE_URL';
-    const supabaseKey = 'SUPABASE_ANON_KEY';
+    // const supabaseUrl = 'SUPABASE_URL';
+    // const supabaseKey = 'SUPABASE_ANON_KEY';
+    const supabaseUrl = 'REMOVED';
+    const supabaseKey = 'REMOVED';
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
     const formData = {
-        personal: {},
-        feedback: {},
-        locations: []
+        personal: {
+            age: null,
+            gender: null,
+            education: null,
+            district: null
+        },
+        cityFeedback: {
+            problem: null,
+            treesRating: 3,
+            summerRating: 3,
+            benefits: []
+        },
+        greenery: {
+            greentime: null,
+            transport: null,
+            whatNew: null,
+            parking: null,
+            feedback: null
+        },
+        plantingLocations: [],
+        residenceLocation: null
     };
 
     let currentStage = 0;
     const stages = document.querySelectorAll('.stage');
     const form = document.getElementById('questionnaire-form');
 
-    const parksRatingInput = document.getElementById('parks-rating');
-    const parksRatingVal = document.getElementById('parks-rating-val');
-    if (parksRatingInput && parksRatingVal) {
-        parksRatingInput.addEventListener('input', (e) => {
-            parksRatingVal.textContent = `(${e.target.value})`;
-        });
-    }
+    // -- Map Variables --
+    let mapPlantings = null;
+    let mapResidence = null;
+    const markersPlantings = [];
+    let markerResidence = null;
+    const bydgoszczCoords = [53.1235, 18.0084];
 
+    // -- UI Elements --
+    const plantingMapId = 'map-plantings';
+    const residenceMapId = 'map-residence';
+
+    // -- Dynamic Rating Display --
+    function setupRatingDisplay(inputId, displayId) {
+        const input = document.getElementById(inputId);
+        const display = document.getElementById(displayId);
+        if (input && display) {
+            input.addEventListener('input', (e) => {
+                display.textContent = `(${e.target.value})`;
+            });
+        }
+    }
+    setupRatingDisplay('trees-rating', 'trees-rating-val');
+    setupRatingDisplay('summer-rating', 'summer-rating-val');
+
+    // -- Stage Navigation --
     function showStage(stageNumber) {
         stages.forEach(stage => stage.classList.remove('active'));
-        document.getElementById(`stage-${stageNumber}`).classList.add('active');
+        const targetStage = document.getElementById(`stage-${stageNumber}`);
+        if (targetStage) targetStage.classList.add('active');
         currentStage = stageNumber;
 
         const progressBar = document.getElementById('progress-bar');
         const progressText = document.getElementById('progress-text');
         if (progressBar) {
-            const progressMap = { 0: '0%', 1: '25%', 2: '50%', 3: '75%' };
+            // 0 -> 0%, 1 -> 20%, 2 -> 40%, 3 -> 60%, 4 -> 80%, 5 -> 90%? 
+            // Let's map 0-5
+            const progressMap = { 0: '0%', 1: '16%', 2: '33%', 3: '50%', 4: '66%', 5: '83%' };
             const percentage = progressMap[stageNumber] || '0%';
             progressBar.style.width = percentage;
             if (progressText) progressText.textContent = percentage;
         }
 
-        if (stageNumber === 3) {
+        // Map sizing fix when stage becomes visible
+        if (stageNumber === 4) {
             form.classList.add('wide-stage');
-            setTimeout(() => map.invalidateSize(), 550);
+            setTimeout(() => {
+                initPlantingMap();
+                if (mapPlantings) mapPlantings.invalidateSize();
+            }, 100);
+        } else if (stageNumber === 5) {
+            form.classList.add('wide-stage');
+            setTimeout(() => {
+                initResidenceMap();
+                if (mapResidence) mapResidence.invalidateSize();
+            }, 100);
         } else {
             form.classList.remove('wide-stage');
         }
     }
+
+    // -- Input Validation Helpers --
     function setPolishValidity(input) {
         input.setCustomValidity("");
-
         if (!input.validity.valid) {
             if (input.validity.valueMissing) {
                 input.setCustomValidity("Proszę wypełnić to pole.");
@@ -68,107 +119,179 @@ document.addEventListener('DOMContentLoaded', () => {
         input.addEventListener('input', () => input.setCustomValidity(""));
     });
 
+    // -- Navigation Event Listeners --
+
     document.querySelectorAll('.next-btn').forEach(button => {
+        if (button.id === 'restart-btn') return; // Skip restart button
+
         button.addEventListener('click', () => {
-            if (currentStage === 1) {
-                const nameInput = document.getElementById('name');
-                const ageInput = document.getElementById('age');
-                const locationInput = document.getElementById('location');
-
-                formData.personal.name = nameInput.value;
-                formData.personal.age = ageInput.value;
-                formData.personal.location = locationInput.value;
-
-                let isValid = true;
-                let firstInvalid = null;
-                [nameInput, ageInput, locationInput].forEach(input => {
-                    input.classList.remove('input-error');
-                    if (!input.checkValidity()) {
-                        void input.offsetWidth;
-                        input.classList.add('input-error');
-                        isValid = false;
-                        if (!firstInvalid) firstInvalid = input;
-                        input.addEventListener('input', () => input.classList.remove('input-error'), { once: true });
-                    }
-                });
-
-                if (!isValid) {
-                    if (firstInvalid) firstInvalid.reportValidity();
-                    return;
-                }
+            if (validateCurrentStage()) {
+                captureCurrentStageData();
+                showStage(currentStage + 1);
             }
-            if (currentStage === 2) {
-                const transportInputs = document.querySelectorAll('input[name="transport"]');
-                const feedbackInput = document.getElementById('feedback');
-                const transportGroup = document.querySelector('.radio-group');
-
-                const transportRating = document.querySelector('input[name="transport"]:checked');
-                formData.feedback.transportRating = transportRating ? transportRating.value : null;
-                formData.feedback.likes = feedbackInput.value;
-                formData.feedback.parksRating = parksRatingInput ? parksRatingInput.value : null;
-
-                let isValid = true;
-                let firstInvalid = null;
-
-                transportGroup.classList.remove('input-error');
-                feedbackInput.classList.remove('input-error');
-                transportGroup.style.border = '';
-                transportGroup.style.padding = '';
-                transportGroup.style.borderRadius = '';
-
-                if (!transportInputs[0].checkValidity()) {
-                    void transportGroup.offsetWidth;
-                    transportGroup.classList.add('input-error');
-                    transportGroup.style.border = '1px solid #dc3545';
-                    transportGroup.style.padding = '5px';
-                    transportGroup.style.borderRadius = '4px';
-                    isValid = false;
-                    firstInvalid = transportInputs[0];
-                    transportInputs.forEach(input => {
-                        input.addEventListener('change', () => {
-                            transportGroup.classList.remove('input-error');
-                            transportGroup.style.border = '';
-                            transportGroup.style.padding = '';
-                            transportGroup.style.borderRadius = '';
-                        }, { once: true });
-                    });
-                }
-
-                if (!feedbackInput.checkValidity()) {
-                    void feedbackInput.offsetWidth;
-                    feedbackInput.classList.add('input-error');
-                    isValid = false;
-                    if (!firstInvalid) firstInvalid = feedbackInput;
-                    feedbackInput.addEventListener('input', () => feedbackInput.classList.remove('input-error'), { once: true });
-                }
-
-                if (!isValid) {
-                    showNotification('Wypełnij wszystkie odpowiedzi!');
-                    if (firstInvalid) firstInvalid.reportValidity();
-                    return;
-                }
-            }
-            showStage(currentStage + 1);
         });
     });
 
     document.querySelectorAll('.back-btn').forEach(button => {
-        if (button.id === 'clear-map-btn') return;
         button.addEventListener('click', () => {
+            // Don't validate when going back
             showStage(currentStage - 1);
         });
     });
 
-    const bydgoszczCoords = [53.1235, 18.0084];
-    const map = L.map('map').setView(bydgoszczCoords, 13);
+    // -- Validation & Data Capture Logic --
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: 'abcd',
-        maxZoom: 20
-    }).addTo(map);
+    function validateCurrentStage() {
+        let isValid = true;
+        let firstInvalid = null;
+        let stageInputs = [];
+        let groupContainers = []; // To clear styles on radio groups
 
-    const markers = [];
+        const currentStageDiv = document.getElementById(`stage-${currentStage}`);
+        if (!currentStageDiv) return true; // Should not happen
+
+        // Reset previous error styles in this stage
+        currentStageDiv.querySelectorAll('.input-error').forEach(el => {
+            el.classList.remove('input-error');
+            if (el.classList.contains('radio-group')) {
+                el.style.border = '';
+                el.style.padding = '';
+                el.style.borderRadius = '';
+            }
+        });
+
+        if (currentStage === 0) {
+            return true; // Welcome stage
+        } else if (currentStage === 1) { // Personal
+            const age = document.getElementById('age');
+            const gender = document.getElementById('gender');
+            const education = document.getElementById('education');
+            const district = document.getElementById('district');
+            stageInputs = [age, gender, education, district];
+        } else if (currentStage === 2) { // City Feedback
+            const problem = document.querySelector('input[name="problem"]:checked');
+            const problemGroup = document.querySelector('input[name="problem"]').closest('.radio-group');
+
+            const benefitsChecked = document.querySelectorAll('input[name="benefits"]:checked');
+            const benefitsGroup = document.querySelector('input[name="benefits"]').closest('.radio-group');
+
+            // Radio groups manual validation
+            if (!problem) {
+                isValid = false;
+                markRadioGroupInvalid(problemGroup);
+                if (!firstInvalid) firstInvalid = problemGroup;
+            }
+            if (benefitsChecked.length === 0) {
+                isValid = false;
+                markRadioGroupInvalid(benefitsGroup);
+                if (!firstInvalid) firstInvalid = benefitsGroup;
+            }
+            // Sliders always have a value
+        } else if (currentStage === 3) { // Greenery
+            const greentime = document.getElementById('greentime');
+            const transport = document.getElementById('transport');
+            const feedback = document.getElementById('feedback');
+            stageInputs = [greentime, transport]; // feedback is optional
+
+            const whatNew = document.querySelector('input[name="what-new"]:checked');
+            const whatNewGroup = document.querySelector('input[name="what-new"]').closest('.radio-group');
+
+            const parking = document.querySelector('input[name="parking"]:checked');
+            const parkingGroup = document.querySelector('input[name="parking"]').closest('.radio-group');
+
+            if (!whatNew) {
+                isValid = false;
+                markRadioGroupInvalid(whatNewGroup);
+                if (!firstInvalid) firstInvalid = whatNewGroup;
+            }
+            if (!parking) {
+                isValid = false;
+                markRadioGroupInvalid(parkingGroup);
+                if (!firstInvalid) firstInvalid = parkingGroup;
+            }
+        } else if (currentStage === 4) { // Planting Map
+            if (formData.plantingLocations.length === 0) {
+                const mapDiv = document.getElementById('map-plantings');
+                mapDiv.classList.add('input-error');
+                showNotification('Wybierz przynajmniej jeden punkt na mapie!');
+                return false;
+            }
+            return true;
+        } else if (currentStage === 5) { // Residence Map
+            if (!formData.residenceLocation) {
+                const mapDiv = document.getElementById('map-residence');
+                mapDiv.classList.add('input-error');
+                showNotification('Zaznacz swoje miejsce zamieszkania!');
+                return false;
+            }
+            return true;
+        }
+
+        // Standard Input validation
+        stageInputs.forEach(input => {
+            if (!input.checkValidity()) {
+                input.classList.add('input-error');
+                isValid = false;
+                if (!firstInvalid) firstInvalid = input;
+                input.addEventListener('input', () => input.classList.remove('input-error'), { once: true });
+            }
+        });
+
+        if (!isValid) {
+            if (firstInvalid && firstInvalid.scrollIntoView) {
+                // firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' }); // Optional
+                if (firstInvalid.reportValidity) firstInvalid.reportValidity();
+                else showNotification("Uzupełnij brakujące pola.");
+            } else {
+                showNotification("Uzupełnij brakujące pola.");
+            }
+            return false;
+        }
+
+        return true;
+    }
+
+    function markRadioGroupInvalid(group) {
+        group.classList.add('input-error');
+        group.style.border = '1px solid #dc3545';
+        group.style.padding = '5px';
+        group.style.borderRadius = '4px';
+        const inputs = group.querySelectorAll('input[type="radio"], input[type="checkbox"]');
+        inputs.forEach(input => {
+            input.addEventListener('change', () => {
+                group.classList.remove('input-error');
+                group.style.border = '';
+                group.style.padding = '';
+                group.style.borderRadius = '';
+            }, { once: true });
+        });
+    }
+
+    function captureCurrentStageData() {
+        if (currentStage === 1) {
+            formData.personal.age = document.getElementById('age').value;
+            formData.personal.gender = document.getElementById('gender').value;
+            formData.personal.education = document.getElementById('education').value;
+            formData.personal.district = document.getElementById('district').value;
+        } else if (currentStage === 2) {
+            formData.cityFeedback.problem = document.querySelector('input[name="problem"]:checked')?.value;
+            formData.cityFeedback.treesRating = document.getElementById('trees-rating').value;
+            formData.cityFeedback.summerRating = document.getElementById('summer-rating').value;
+            // Capture multiple values for benefits
+            const benefitsChecked = document.querySelectorAll('input[name="benefits"]:checked');
+            formData.cityFeedback.benefits = Array.from(benefitsChecked).map(cb => cb.value);
+        } else if (currentStage === 3) {
+            formData.greenery.greentime = document.getElementById('greentime').value;
+            formData.greenery.transport = document.getElementById('transport').value;
+            formData.greenery.whatNew = document.querySelector('input[name="what-new"]:checked')?.value;
+            formData.greenery.parking = document.querySelector('input[name="parking"]:checked')?.value;
+            formData.greenery.feedback = document.getElementById('feedback').value;
+        }
+        // Stage 4 & 5 data is captured on map interaction
+    }
+
+
+    // -- Maps Logic --
 
     const customIcon = L.divIcon({
         className: 'custom-marker-wrapper',
@@ -177,43 +300,101 @@ document.addEventListener('DOMContentLoaded', () => {
         iconAnchor: [12, 12]
     });
 
-    map.on('click', (e) => {
-        document.getElementById('map').classList.remove('input-error');
-        const { lat, lng } = e.latlng;
-        const point = { lat, lng };
+    const residenceIcon = L.divIcon({
+        className: 'custom-marker-wrapper residence-marker',
+        html: '<div class="custom-marker-icon" style="background-color: #e74c3c;"></div>', // Different color
+        iconSize: [24, 24],
+        iconAnchor: [12, 12]
+    });
 
-        const marker = L.marker([lat, lng], { icon: customIcon }).addTo(map);
+    function initPlantingMap() {
+        if (mapPlantings) return; // Already initialized
 
-        const container = document.createElement('div');
-        const removeBtn = document.createElement('button');
-        removeBtn.type = 'button';
-        removeBtn.className = 'remove-marker-btn';
-        removeBtn.innerText = 'Usuń punkt';
-        removeBtn.onclick = () => {
-            map.removeLayer(marker);
-            const index = markers.indexOf(marker);
-            if (index > -1) {
-                markers.splice(index, 1);
-                formData.locations.splice(index, 1);
+        mapPlantings = L.map('map-plantings').setView(bydgoszczCoords, 13);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 20
+        }).addTo(mapPlantings);
+
+        mapPlantings.on('click', (e) => {
+            document.getElementById('map-plantings').classList.remove('input-error');
+            const { lat, lng } = e.latlng;
+            const point = { lat, lng };
+
+            const marker = L.marker([lat, lng], { icon: customIcon }).addTo(mapPlantings);
+
+            // Popup to remove
+            const container = document.createElement('div');
+            const removeBtn = document.createElement('button');
+            removeBtn.type = 'button';
+            removeBtn.className = 'remove-marker-btn';
+            removeBtn.innerText = 'Usuń punkt';
+            removeBtn.onclick = () => {
+                mapPlantings.removeLayer(marker);
+                const index = markersPlantings.indexOf(marker);
+                if (index > -1) {
+                    markersPlantings.splice(index, 1);
+                    formData.plantingLocations.splice(index, 1);
+                }
+            };
+            container.appendChild(removeBtn);
+            marker.bindPopup(container);
+
+            // Open popup immediately? No, allows adding multiple quickly.
+
+            markersPlantings.push(marker);
+            formData.plantingLocations.push(point);
+        });
+    }
+
+    function initResidenceMap() {
+        if (mapResidence) return;
+
+        mapResidence = L.map('map-residence').setView(bydgoszczCoords, 13);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 20
+        }).addTo(mapResidence);
+
+        mapResidence.on('click', (e) => {
+            document.getElementById('map-residence').classList.remove('input-error');
+            const { lat, lng } = e.latlng;
+
+            // Only one marker allowed
+            if (markerResidence) {
+                mapResidence.removeLayer(markerResidence);
             }
-        };
-        container.appendChild(removeBtn);
-        marker.bindPopup(container);
 
-        formData.locations.push(point);
-        markers.push(marker);
-    });
+            markerResidence = L.marker([lat, lng], { icon: residenceIcon }).addTo(mapResidence);
+            formData.residenceLocation = { lat, lng };
+        });
+    }
 
-    const successStage = document.getElementById('success-stage');
-    const restartBtn = document.getElementById('restart-btn');
+    // Clear Btns
+    const clearPlantingsBtn = document.getElementById('clear-map-btn-plantings');
+    if (clearPlantingsBtn) {
+        clearPlantingsBtn.addEventListener('click', () => {
+            markersPlantings.forEach(m => mapPlantings.removeLayer(m));
+            markersPlantings.length = 0;
+            formData.plantingLocations = [];
+        });
+    }
 
-    const clearMapBtn = document.getElementById('clear-map-btn');
-    clearMapBtn.addEventListener('click', () => {
-        markers.forEach(marker => map.removeLayer(marker));
-        markers.length = 0;
-        formData.locations = [];
-    });
+    const clearResidenceBtn = document.getElementById('clear-map-btn-residence');
+    if (clearResidenceBtn) {
+        clearResidenceBtn.addEventListener('click', () => {
+            if (markerResidence) {
+                mapResidence.removeLayer(markerResidence);
+                markerResidence = null;
+            }
+            formData.residenceLocation = null;
+        });
+    }
 
+
+    // -- Notifications --
     const notificationToast = document.getElementById('notification-toast');
     const notificationMessage = document.getElementById('notification-message');
     const notificationClose = document.getElementById('notification-close');
@@ -222,9 +403,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function showNotification(message, duration = 4000) {
         notificationMessage.textContent = message;
         notificationToast.classList.add('active');
-
         if (notificationTimeout) clearTimeout(notificationTimeout);
-
         notificationTimeout = setTimeout(() => {
             notificationToast.classList.remove('active');
         }, duration);
@@ -235,28 +414,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (notificationTimeout) clearTimeout(notificationTimeout);
     });
 
+
+    // -- Submission & Reset --
+
+    const successStage = document.getElementById('success-stage');
+    const restartBtn = document.getElementById('restart-btn');
+
     restartBtn.addEventListener('click', () => {
-        formData.personal = {};
-        formData.feedback = {};
-        formData.locations = [];
-        form.reset();
-        if (parksRatingVal) parksRatingVal.textContent = '(3)';
-        markers.forEach(marker => map.removeLayer(marker));
-        markers.length = 0;
-        map.setView(bydgoszczCoords, 13);
-        successStage.classList.remove('active');
-        showStage(0);
+        location.reload(); // Simplest way to reset everything cleanly
     });
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        if (formData.locations.length === 0) {
-            const mapDiv = document.getElementById('map');
-            mapDiv.classList.remove('input-error');
-            void mapDiv.offsetWidth;
-            mapDiv.classList.add('input-error');
-            showNotification('Wybierz przynajmniej jeden punkt na mapie!');
+        // Final check usually matches stage 5 validation, but good to be safe
+        if (!formData.residenceLocation) {
+            showNotification('Błąd: Brak lokalizacji zamieszkania.');
             return;
         }
 
@@ -268,19 +441,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
+            // Note: Data mapping MUST match Supabase table columns. 
+            // Since we don't control the table, we make a best effort guess based on typical patterns 
+            // or the previous code, but expanding it.
+
+            const payload = {
+                user_age: parseInt(formData.personal.age),
+                user_gender: formData.personal.gender,
+                education_level: formData.personal.education,
+                district: formData.personal.district,
+
+                problem_type: formData.cityFeedback.problem,
+                trees_rating: parseInt(formData.cityFeedback.treesRating),
+                summer_rating: parseInt(formData.cityFeedback.summerRating),
+                benefits_type: formData.cityFeedback.benefits,
+
+                greenery_time: formData.greenery.greentime,
+                transport_mode: formData.greenery.transport,
+                desired_greenery: formData.greenery.whatNew,
+                parking_opinion: formData.greenery.parking,
+                heat_island_feedback: formData.greenery.feedback,
+
+                planting_locations: formData.plantingLocations,
+                residence_location: formData.residenceLocation 
+            };
+
             const { data, error } = await supabaseClient
-                .from('survey_responses_test')
-                .insert([
-                    {
-                        user_name: formData.personal.name,
-                        user_age: parseInt(formData.personal.age),
-                        user_location: formData.personal.location,
-                        transport_rating: formData.feedback.transportRating,
-                        parks_rating: formData.feedback.parksRating,
-                        feedback_text: formData.feedback.likes,
-                        selected_points: formData.locations
-                    }
-                ]);
+                .from('test2')
+                .insert([payload]);
 
             if (error) throw error;
 
@@ -291,8 +479,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             console.error('Submission error:', error);
-            alert(`Error: ${error.message || 'Check console for details'}`);
+            showNotification(`Błąd wysyłania: ${error.message || 'Spróbuj ponownie później.'}`);
         }
     });
-
 });
+

@@ -1,11 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-/* ========================================
-   MODERN DESIGN SYSTEM
-   ======================================== */
-
 :root {
-    /* Color Palette - Modern & Vibrant */
     --primary-50: #fdf4f9;
     --primary-100: #fbe8f3;
     --primary-200: #f8d1e7;
@@ -39,7 +34,6 @@
     --accent-800: #865732;
     --accent-900: #6e482b;
 
-    /* Neutrals */
     --gray-50: #fafafa;
     --gray-100: #f5f5f5;
     --gray-200: #e5e5e5;
@@ -51,7 +45,6 @@
     --gray-800: #262626;
     --gray-900: #171717;
 
-    /* Semantic Colors */
     --text-primary: #1a1a1a;
     --text-secondary: #525252;
     --text-tertiary: #737373;
@@ -62,7 +55,6 @@
     --success: #10b981;
     --warning: #f59e0b;
 
-    /* Design Tokens */
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 16px;
@@ -106,7 +98,6 @@ body {
     overflow-x: hidden;
 }
 
-/* Animated Background Pattern */
 body::before {
     content: '';
     position: fixed;
@@ -658,7 +649,9 @@ button[type="submit"]:active {
    MAP STYLES
    ======================================== */
 
-#map {
+#map,
+#map-plantings,
+#map-residence {
     height: 600px;
     width: 100%;
     border-radius: var(--radius-lg);
@@ -668,11 +661,56 @@ button[type="submit"]:active {
     box-shadow: var(--shadow-lg);
     transition: all var(--transition-base);
     position: relative;
+    z-index: 1;
 }
 
-#map:hover {
+#map:hover,
+#map-plantings:hover,
+#map-residence:hover {
     border-color: var(--primary-300);
     box-shadow: var(--shadow-xl);
+}
+
+input[type="checkbox"] {
+    display: none;
+}
+
+input[type="checkbox"]+label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    background: white;
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all var(--transition-base);
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+}
+
+input[type="checkbox"]:checked+label {
+    background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+    color: white;
+    border-color: var(--primary-600);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+input[type="checkbox"]:checked+label::before {
+    content: '✓';
+    margin-right: 8px;
+    font-size: 1.1em;
+    font-weight: 800;
+}
+
+input[type="checkbox"]+label:hover {
+    border-color: var(--primary-300);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
 .custom-marker-icon {
@@ -781,7 +819,9 @@ button.remove-marker-btn:hover {
 input.input-error,
 textarea.input-error,
 select.input-error,
-#map.input-error {
+#map.input-error,
+#map-plantings.input-error,
+#map-residence.input-error {
     border-color: var(--error);
     animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97);
 }
@@ -996,7 +1036,6 @@ select.input-error,
     }
 }
 
-/* Focus visible for keyboard navigation */
 *:focus-visible {
     outline: 3px solid var(--primary-400);
     outline-offset: 2px;
