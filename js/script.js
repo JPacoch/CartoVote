@@ -23,8 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
             parking: null,
             feedback: null
         },
-        plantingLocations: [],
-        residenceLocation: null
+        plantingLocations: []
     };
 
     let currentStage = 0;
@@ -32,13 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('questionnaire-form');
 
     let mapPlantings = null;
-    let mapResidence = null;
     const markersPlantings = [];
-    let markerResidence = null;
     const bydgoszczCoords = [53.12397889906925, 18.058089720648695];
 
     const plantingMapId = 'map-plantings';
-    const residenceMapId = 'map-residence';
 
     function setupRatingDisplay(inputId, displayId) {
         const input = document.getElementById(inputId);
@@ -59,12 +55,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (targetStage) targetStage.classList.add('active');
         currentStage = stageNumber;
 
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
         const progressBar = document.getElementById('progress-bar');
         const progressText = document.getElementById('progress-text');
         if (progressBar) {
-            // 0 -> 0%, 1 -> 20%, 2 -> 40%, 3 -> 60%, 4 -> 80%, 5 -> 90%? 
-            // Let's map 0-5
-            const progressMap = { 0: '0%', 1: '16%', 2: '33%', 3: '50%', 4: '66%', 5: '83%' };
+            const progressMap = { 0: '0%', 1: '25%', 2: '50%', 3: '75%', 4: '100%' };
             const percentage = progressMap[stageNumber] || '0%';
             progressBar.style.width = percentage;
             if (progressText) progressText.textContent = percentage;
@@ -75,12 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 initPlantingMap();
                 if (mapPlantings) mapPlantings.invalidateSize();
-            }, 100);
-        } else if (stageNumber === 5) {
-            form.classList.add('wide-stage');
-            setTimeout(() => {
-                initResidenceMap();
-                if (mapResidence) mapResidence.invalidateSize();
             }, 100);
         } else {
             form.classList.remove('wide-stage');
@@ -114,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     document.querySelectorAll('.next-btn').forEach(button => {
-        if (button.id === 'restart-btn') return; 
+        if (button.id === 'restart-btn') return;
 
         button.addEventListener('click', () => {
             if (validateCurrentStage()) {
@@ -135,10 +125,10 @@ document.addEventListener('DOMContentLoaded', () => {
         let isValid = true;
         let firstInvalid = null;
         let stageInputs = [];
-        let groupContainers = []; 
+        let groupContainers = [];
 
         const currentStageDiv = document.getElementById(`stage-${currentStage}`);
-        if (!currentStageDiv) return true; 
+        if (!currentStageDiv) return true;
 
 
         currentStageDiv.querySelectorAll('.input-error').forEach(el => {
@@ -151,14 +141,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (currentStage === 0) {
-            return true; 
+            return true;
         } else if (currentStage === 1) {
             const age = document.getElementById('age');
             const gender = document.getElementById('gender');
             const education = document.getElementById('education');
             const district = document.getElementById('district');
             stageInputs = [age, gender, education, district];
-        } else if (currentStage === 2) { 
+        } else if (currentStage === 2) {
             const problem = document.querySelector('input[name="problem"]:checked');
             const problemGroup = document.querySelector('input[name="problem"]').closest('.radio-group');
 
@@ -175,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 markRadioGroupInvalid(benefitsGroup);
                 if (!firstInvalid) firstInvalid = benefitsGroup;
             }
-        } else if (currentStage === 3) { 
+        } else if (currentStage === 3) {
             const greentime = document.getElementById('greentime');
             const transport = document.getElementById('transport');
             const feedback = document.getElementById('feedback');
@@ -202,14 +192,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const mapDiv = document.getElementById('map-plantings');
                 mapDiv.classList.add('input-error');
                 showNotification('Wybierz przynajmniej jeden punkt na mapie!');
-                return false;
-            }
-            return true;
-        } else if (currentStage === 5) {
-            if (!formData.residenceLocation) {
-                const mapDiv = document.getElementById('map-residence');
-                mapDiv.classList.add('input-error');
-                showNotification('Zaznacz swoje miejsce zamieszkania!');
                 return false;
             }
             return true;
@@ -283,29 +265,39 @@ document.addEventListener('DOMContentLoaded', () => {
         iconAnchor: [12, 12]
     });
 
-    const residenceIcon = L.divIcon({
-        className: 'custom-marker-wrapper residence-marker',
-        html: '<div class="custom-marker-icon" style="background-color: #e74c3c;"></div>', // Different color
-        iconSize: [24, 24],
-        iconAnchor: [12, 12]
-    });
-
     function initPlantingMap() {
         if (mapPlantings) return;
 
-        mapPlantings = L.map('map-plantings').setView(bydgoszczCoords, 13);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        const defaultLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
             subdomains: 'abcd',
             maxZoom: 20
-        }).addTo(mapPlantings);
+        });
+
+        const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+            maxZoom: 20
+        });
+
+        mapPlantings = L.map('map-plantings', {
+            center: bydgoszczCoords,
+            zoom: 13,
+            layers: [defaultLayer]
+        });
+
+        const baseMaps = {
+            "Mapa": defaultLayer,
+            "Satelita": satelliteLayer
+        };
+
+        L.control.layers(baseMaps).addTo(mapPlantings);
 
         mapPlantings.on('click', (e) => {
             document.getElementById('map-plantings').classList.remove('input-error');
             const { lat, lng } = e.latlng;
             const point = { lat, lng };
 
-            const marker = L.marker([lat, lng], { icon: customIcon }).addTo(mapPlantings);
+            const marker = L.marker([lat, lng], { icon: customIcon, draggable: true }).addTo(mapPlantings);
 
             const container = document.createElement('div');
             const removeBtn = document.createElement('button');
@@ -323,32 +315,16 @@ document.addEventListener('DOMContentLoaded', () => {
             container.appendChild(removeBtn);
             marker.bindPopup(container);
 
+            marker.on('dragend', function (event) {
+                const position = marker.getLatLng();
+                const index = markersPlantings.indexOf(marker);
+                if (index > -1) {
+                    formData.plantingLocations[index] = { lat: position.lat, lng: position.lng };
+                }
+            });
 
             markersPlantings.push(marker);
             formData.plantingLocations.push(point);
-        });
-    }
-
-    function initResidenceMap() {
-        if (mapResidence) return;
-
-        mapResidence = L.map('map-residence').setView(bydgoszczCoords, 13);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-            subdomains: 'abcd',
-            maxZoom: 20
-        }).addTo(mapResidence);
-
-        mapResidence.on('click', (e) => {
-            document.getElementById('map-residence').classList.remove('input-error');
-            const { lat, lng } = e.latlng;
-
-            if (markerResidence) {
-                mapResidence.removeLayer(markerResidence);
-            }
-
-            markerResidence = L.marker([lat, lng], { icon: residenceIcon }).addTo(mapResidence);
-            formData.residenceLocation = { lat, lng };
         });
     }
 
@@ -358,17 +334,6 @@ document.addEventListener('DOMContentLoaded', () => {
             markersPlantings.forEach(m => mapPlantings.removeLayer(m));
             markersPlantings.length = 0;
             formData.plantingLocations = [];
-        });
-    }
-
-    const clearResidenceBtn = document.getElementById('clear-map-btn-residence');
-    if (clearResidenceBtn) {
-        clearResidenceBtn.addEventListener('click', () => {
-            if (markerResidence) {
-                mapResidence.removeLayer(markerResidence);
-                markerResidence = null;
-            }
-            formData.residenceLocation = null;
         });
     }
 
@@ -404,14 +369,9 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.cityFeedback = { problem: null, treesRating: 3, summerRating: 3, benefits: [] };
         formData.greenery = { greentime: null, transport: null, whatNew: null, parking: null, feedback: null };
         formData.plantingLocations = [];
-        formData.residenceLocation = null;
 
         markersPlantings.forEach(m => mapPlantings.removeLayer(m));
         markersPlantings.length = 0;
-        if (markerResidence) {
-            mapResidence.removeLayer(markerResidence);
-            markerResidence = null;
-        }
 
         currentStage = 0;
         successStage.classList.remove('active');
@@ -424,11 +384,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-
-        if (!formData.residenceLocation) {
-            showNotification('Błąd: Brak lokalizacji zamieszkania.');
-            return;
-        }
 
         console.log('Submitting data:', formData);
 
@@ -457,7 +412,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 heat_island_feedback: formData.greenery.feedback,
 
                 planting_locations: formData.plantingLocations,
-                residence_location: formData.residenceLocation
+                residence_location: null
             };
 
             const { data, error } = await supabaseClient
