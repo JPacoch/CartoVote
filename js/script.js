@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const gender = document.getElementById('gender');
             const education = document.getElementById('education');
             const district = document.getElementById('district');
-            stageInputs = [age, gender, education, district];
+            stageInputs = [age, gender, education, district].filter(Boolean);
         } else if (currentStage === 2) {
             if (formData.plantingLocations.length === 0) {
                 const mapDiv = document.getElementById('map-plantings');
@@ -248,10 +248,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function captureCurrentStageData() {
         if (currentStage === 1) {
-            formData.personal.age = document.getElementById('age').value;
-            formData.personal.gender = document.getElementById('gender').value;
-            formData.personal.education = document.getElementById('education').value;
-            formData.personal.district = document.getElementById('district').value;
+            formData.personal.age = document.getElementById('age')?.value || null;
+            formData.personal.gender = document.getElementById('gender')?.value || null;
+            formData.personal.education = document.getElementById('education')?.value || null;
+            formData.personal.district = document.getElementById('district')?.value || null;
         } else if (currentStage === 4) {
             formData.cityFeedback.problem = document.querySelector('input[name="problem"]:checked')?.value;
             formData.cityFeedback.treesRating = document.getElementById('trees-rating').value;
