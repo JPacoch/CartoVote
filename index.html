@@ -21,17 +21,19 @@
             </div>
             <!-- Welcome Stage -->
             <div id="stage-0" class="stage active">
-                <h2>Witamy!</h2>
-                <p>Twoja opinia ma realny wpływ na to, jak będą wyglądać nasze wspólne przestrzenie. Wypełniając tę
-                    geoankietę, pomagasz nam zebrać dane, które przekażemy decydentom i planistom.</p>
-                <p>Dbamy o Twoją prywatność, dlatego informujemy, że administratorem Twoich danych jest BRM. Zebrane
-                    informacje, w tym wskazane przez Ciebie lokalizacje, przetwarzamy wyłącznie w celu opracowania
-                    zbiorczego raportu o potrzebach mieszkańców Bydgoszczy. Wszystkie analizy publikujemy w formie
-                    zanonimizowanych statystyk, co oznacza, że Twoje konkretne odpowiedzi pozostają bezpieczne i nie
-                    będą powiązane z Twoją tożsamością w publicznych zestawieniach. Masz pełne prawo do wglądu w swoje
-                    dane oraz ich usunięcia.</p>
-                <p>Klikając przycisk poniżej, wyrażasz zgodę na udział w badaniu i przetwarzanie danych zgodnie z naszą
-                    polityką prywatności. Dziękujemy za Twój czas i zaangażowanie!</p>
+                <h2>Zadrzew Bydgoszcz!</h2>
+                <p>Chcemy wspólnie z Tobą i innymi mieszkańcami wskazać miejsca w Bydgoszczy, w których potrzebne są
+                    nowe nasadzenia. Zebrane informacje pozwolą nam przygotować konkretne wnioski i wystąpienia
+                    dotyczące nasadzeń w Bydgoszczy do Urzędu Miasta Bydgoszczy i innych instytucji.</p>
+                <p>Ankieta składa się z dwóch części: krótkich pytań oraz mapy, na której można zaznaczyć proponowane
+                    lokalizacje nasadzeń. Wypełnienie zajmuje około 2–3 minut.</p>
+                <p>Ankieta jest anonimowa – nie zbieramy danych osobowych ani adresów e-mail.</p>
+                <p>Każde zgłoszenie pomoże lepiej zrozumieć potrzeby mieszkańców i wzmocni nasze działania na rzecz
+                    zieleni w mieście.</p>
+                <p>Projekt powstał z inicjatywy Bydgoskiego Ruchu Miejskiego i Stowarzyszenia MODrzew – Monitoring
+                    Obywatelski Drzew.</p>
+                <p>Wykonanie: Jakub Pacocha</p>
+
                 <button type="button" class="next-btn">Dalej</button>
             </div>
 
@@ -97,6 +99,7 @@
                         <option value="Wyżyny">Wyżyny</option>
                         <option value="Wzgórze Wolności">Wzgórze Wolności</option>
                         <option value="Zimne Wody-Czersko Polskie">Zimne Wody-Czersko Polskie</option>
+                        <option value="Zimne Wody-Czersko Polskie">mieszkam poza Bydgoszczą</option>
                     </select>
                 </div>
                 <div class="button-group">
@@ -119,8 +122,8 @@
                         <label for="problem-t3">Drzewa są zaniedbane</label>
                         <input type="radio" id="problem-t4" name="problem" value="Betonoza">
                         <label for="problem-t4">"Betonoza" (zastępowanie trawników i drzew kostką lub asfaltem)</label>
-                        <input type="radio" id="problem-t5" name="problem" value="Niska estetyka">
-                        <label for="problem-t5">Niska estetyka</label>
+                        <input type="radio" id="problem-t5" name="problem" value="Nie widzę problemów">
+                        <label for="problem-t5">Nie widzę problemów</label>
                     </div>
                 </div>
                 <hr class="simple-line">
@@ -154,6 +157,7 @@
                 <div class="form-group">
                     <label>Które korzyści płynące z obecności drzew i zieleni miejskiej są dla Ciebie
                         najważniejsze?</label>
+                    <label style="font-size: small;">(Można zaznaczyć kilka opcji)</label>
                     <div class="radio-group">
                         <input type="checkbox" id="benefits-t1" name="benefits" value="Cień i schronienie w upalne dni">
                         <label for="benefits-t1">Cień i schronienie w upalne dni</label>
@@ -165,8 +169,8 @@
                         <input type="checkbox" id="benefits-t4" name="benefits" value="Poprawa jakości powietrza">
                         <label for="benefits-t4">Poprawa jakości powietrza</label>
                         <input type="checkbox" id="benefits-t5" name="benefits"
-                            value="Zapewnianie siedlisk dla ptaków i wiewiórek">
-                        <label for="benefits-t5">Zapewnianie siedlisk dla ptaków i wiewiórek</label>
+                            value="Zapewnianie siedlisk dla ptaków i innych zwierząt">
+                        <label for="benefits-t5">Zapewnianie siedlisk dla ptaków i innych zwierząt</label>
                         <input type="checkbox" id="benefits-t6" name="benefits"
                             value="Pochłanianie wody deszczowej podczas ulew">
                         <label for="benefits-t6">Pochłanianie wody deszczowej podczas ulew</label>
@@ -232,6 +236,11 @@
                         „wyspą ciepła” i wymaga pilnej uwagi?</label>
                     <textarea id="feedback" name="feedback" rows="4"></textarea>
                 </div>
+                <div class="form-group">
+                    <label for="feedback">Jeśli masz jeszcze jakieś uwagi lub pomysły związane z tematem zieleni w
+                        mieście, wpisz je tutaj:</label>
+                    <textarea id="feedback" name="feedback" rows="4"></textarea>
+                </div>
                 <div class="button-group">
                     <button type="button" class="back-btn">Powrót</button>
                     <button type="button" class="next-btn">Dalej</button>
@@ -241,7 +250,7 @@
             <div id="stage-4" class="stage">
                 <h2>Część 4: Nasadzenia drzew</h2>
                 <div class="form-group">
-                    <label>Zaznacz preferowane miejsca nasadzeń:</label>
+                    <label style="font-size: 32px; font-weight: bold;">Zaznacz preferowane miejsca nasadzeń:</label>
                     <div id="map-plantings"></div>
                 </div>
                 <div class="button-group">
@@ -272,9 +281,11 @@
             <!-- <p class="footer-text"></p> -->
             <div class="footer-links">
                 <a href="#" class="footer-link">Polityka Prywatności</a>
-                <a href="https://bydgoskiruchmiejski.pl/" class="footer-link">Bydgoski Ruch Miejski</a>
-                <a href="https://www.modrzew.org.pl//" class="footer-link">MODrzew</a>
-                <a href="#" class="footer-link">Kontakt</a>
+                <a href="https://bydgoskiruchmiejski.pl/" class="footer-link" target="_blank"
+                    rel="noopener noreferrer">Bydgoski Ruch Miejski</a>
+                <a href="https://www.modrzew.org.pl//" class="footer-link" target="_blank"
+                    rel="noopener noreferrer">MODrzew</a>
+                <a href="https://bydgoskiruchmiejski.pl/kontakt/" class="footer-link">Kontakt</a>
             </div>
         </div>
     </footer>
