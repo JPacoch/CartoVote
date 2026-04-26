@@ -60,13 +60,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const progressBar = document.getElementById('progress-bar');
         const progressText = document.getElementById('progress-text');
         if (progressBar) {
-            const progressMap = { 0: '0%', 1: '25%', 2: '50%', 3: '75%', 4: '100%' };
+            const progressMap = { 0: '0%', 1: '20%', 2: '40%', 3: '60%', 4: '80%', 5: '100%' };
             const percentage = progressMap[stageNumber] || '0%';
             progressBar.style.width = percentage;
             if (progressText) progressText.textContent = percentage;
         }
 
-        if (stageNumber === 4) {
+        if (stageNumber === 2) {
             form.classList.add('wide-stage');
             setTimeout(() => {
                 initPlantingMap();
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     document.querySelectorAll('.next-btn').forEach(button => {
-        if (button.id === 'restart-btn') return;
+        if (button.id === 'restart-btn' || button.id === 'map-modal-okay') return;
 
         button.addEventListener('click', () => {
             if (validateCurrentStage()) {
@@ -119,6 +119,15 @@ document.addEventListener('DOMContentLoaded', () => {
             showStage(currentStage - 1);
         });
     });
+
+    const skipAdditionalBtn = document.getElementById('skip-additional-btn');
+    if (skipAdditionalBtn) {
+        skipAdditionalBtn.addEventListener('click', () => {
+            formData.cityFeedback = { problem: null, treesRating: null, summerRating: null, benefits: [null] };
+            formData.greenery = { greentime: null, transport: null, whatNew: null, parking: null, feedback: null };
+            form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+        });
+    }
 
 
     function validateCurrentStage() {
@@ -149,6 +158,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const district = document.getElementById('district');
             stageInputs = [age, gender, education, district];
         } else if (currentStage === 2) {
+            if (formData.plantingLocations.length === 0) {
+                const mapDiv = document.getElementById('map-plantings');
+                mapDiv.classList.add('input-error');
+                showNotification('Wybierz przynajmniej jeden punkt na mapie!');
+                return false;
+            }
+            return true;
+        } else if (currentStage === 3) {
+            return true;
+        } else if (currentStage === 4) {
             const problem = document.querySelector('input[name="problem"]:checked');
             const problemGroup = document.querySelector('input[name="problem"]').closest('.radio-group');
 
@@ -165,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 markRadioGroupInvalid(benefitsGroup);
                 if (!firstInvalid) firstInvalid = benefitsGroup;
             }
-        } else if (currentStage === 3) {
+        } else if (currentStage === 5) {
             const greentime = document.getElementById('greentime');
             const transport = document.getElementById('transport');
             const feedback = document.getElementById('feedback');
@@ -187,14 +206,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 markRadioGroupInvalid(parkingGroup);
                 if (!firstInvalid) firstInvalid = parkingGroup;
             }
-        } else if (currentStage === 4) {
-            if (formData.plantingLocations.length === 0) {
-                const mapDiv = document.getElementById('map-plantings');
-                mapDiv.classList.add('input-error');
-                showNotification('Wybierz przynajmniej jeden punkt na mapie!');
-                return false;
-            }
-            return true;
         }
 
         stageInputs.forEach(input => {
@@ -241,13 +252,13 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.personal.gender = document.getElementById('gender').value;
             formData.personal.education = document.getElementById('education').value;
             formData.personal.district = document.getElementById('district').value;
-        } else if (currentStage === 2) {
+        } else if (currentStage === 4) {
             formData.cityFeedback.problem = document.querySelector('input[name="problem"]:checked')?.value;
             formData.cityFeedback.treesRating = document.getElementById('trees-rating').value;
             formData.cityFeedback.summerRating = document.getElementById('summer-rating').value;
             const benefitsChecked = document.querySelectorAll('input[name="benefits"]:checked');
             formData.cityFeedback.benefits = Array.from(benefitsChecked).map(cb => cb.value);
-        } else if (currentStage === 3) {
+        } else if (currentStage === 5) {
             formData.greenery.greentime = document.getElementById('greentime').value;
             formData.greenery.transport = document.getElementById('transport').value;
             formData.greenery.whatNew = document.querySelector('input[name="what-new"]:checked')?.value;
@@ -401,8 +412,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 district: formData.personal.district,
 
                 problem_type: formData.cityFeedback.problem,
-                trees_rating: parseInt(formData.cityFeedback.treesRating),
-                summer_rating: parseInt(formData.cityFeedback.summerRating),
+                trees_rating: formData.cityFeedback.treesRating === null ? null : parseInt(formData.cityFeedback.treesRating),
+                summer_rating: formData.cityFeedback.summerRating === null ? null : parseInt(formData.cityFeedback.summerRating),
                 benefits_type: formData.cityFeedback.benefits,
 
                 greenery_time: formData.greenery.greentime,
@@ -431,5 +442,22 @@ document.addEventListener('DOMContentLoaded', () => {
             showNotification(`Błąd wysyłania: ${error.message || 'Spróbuj ponownie później.'}`);
         }
     });
-});
 
+    // Map Instruction Modal Logic
+    const mapModalOverlay = document.getElementById('map-instruction-modal');
+    const mapInfoBtn = document.getElementById('map-info-btn');
+    const mapModalCloseX = document.getElementById('map-modal-close-x');
+    const mapModalOkay = document.getElementById('map-modal-okay');
+
+    function closeMapModal() {
+        if (mapModalOverlay) mapModalOverlay.classList.add('hidden');
+    }
+
+    function openMapModal() {
+        if (mapModalOverlay) mapModalOverlay.classList.remove('hidden');
+    }
+
+    if (mapModalCloseX) mapModalCloseX.addEventListener('click', closeMapModal);
+    if (mapModalOkay) mapModalOkay.addEventListener('click', closeMapModal);
+    if (mapInfoBtn) mapInfoBtn.addEventListener('click', openMapModal);
+});

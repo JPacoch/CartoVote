@@ -108,9 +108,63 @@
                 </div>
             </div>
 
-            <!-- Stage 2: City Feedback -->
+            <!-- Stage 2: Map Question -->
             <div id="stage-2" class="stage">
-                <h2>Część 2: O zieleni I</h2>
+                <h2>Część 2: Nasadzenia drzew</h2>
+                <div class="form-group">
+                    <label style="font-size: 32px; font-weight: bold;">Zaznacz preferowane miejsca nasadzeń:</label>
+                    <div style="position: relative; margin-bottom: 1.5rem;">
+                        <div id="map-plantings" style="margin-bottom: 0;"></div>
+                        <button type="button" id="map-info-btn" class="map-info-btn" title="Instrukcja użycia mapy">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                        </button>
+                        <div id="map-instruction-modal" class="map-modal-overlay">
+                            <div class="map-modal-content">
+                                <button type="button" id="map-modal-close-x" class="map-modal-close"
+                                    title="Zamknij">&times;</button>
+                                <h3 style="color: var(--primary-700);">Jak korzystać z mapy?</h3>
+                                <p
+                                    style="margin-top: 15px; font-size: 0.95rem; text-align: left; color: var(--text-primary);">
+                                    <b>1.</b> Kliknij w mapę, aby dodać punkt nasadzenia drzewa.<br><br>
+                                    <b>2.</b> Dodany punkt można przesuwać, przeciągając go myszą / palcem.<br><br>
+                                    <b>3.</b> Jeżeli chcesz usunąć punkt, kliknij na niego i wybierz "Usuń".<br><br>
+                                    <b>4.</b> Widok satelitarny włączysz przyciskiem (warstwy) w prawym górnym rogu.
+                                </p>
+                                <button type="button" id="map-modal-okay" class="next-btn"
+                                    style="width: 100%; margin-top: 15px; padding: 0.75rem;">Rozumiem</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="back-btn">Powrót</button>
+                    <button type="button" id="clear-map-btn-plantings" class="del-btn">Wyczyść</button>
+                    <button type="button" class="next-btn">Dalej</button>
+                </div>
+            </div>
+
+            <!-- Stage 3: Interstitial -->
+            <div id="stage-3" class="stage" style="text-align: center; padding-top: 20px;">
+                <h2>Dodatkowe pytania</h2>
+                <p>Czy chcesz odpowiedzieć na kilka dodatkowych pytań dotyczących zieleni w mieście?</p>
+                <div class="button-group"
+                    style="justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 20px;">
+                    <button type="button" class="back-btn">Powrót</button>
+                    <button type="button" id="skip-additional-btn" class="del-btn"
+                        style="background-color: #f44336; color: white;">Nie, zakończ i wyślij</button>
+                    <button type="button" class="next-btn">Tak, kontynuuj</button>
+                </div>
+            </div>
+
+            <!-- Stage 4: City Feedback -->
+            <div id="stage-4" class="stage">
+                <h2>Część 3: O zieleni I</h2>
                 <div class="form-group">
                     <label>Jaki jest największy problem dotyczący zieleni miejskiej w Twojej okolicy?</label>
                     <div class="radio-group">
@@ -182,8 +236,9 @@
                 </div>
             </div>
 
-            <div id="stage-3" class="stage">
-                <h2>Część 3: O zieleni II</h2>
+            <!-- Stage 5: Greenery -->
+            <div id="stage-5" class="stage">
+                <h2>Część 4: O zieleni II</h2>
                 <div class="form-group">
                     <label for="greentime">Ile czasu spędzasz w parkach miejskich lub lasach tygodniowo?</label>
                     <select id="greentime" name="greentime" required>
@@ -243,19 +298,6 @@
                 </div>
                 <div class="button-group">
                     <button type="button" class="back-btn">Powrót</button>
-                    <button type="button" class="next-btn">Dalej</button>
-                </div>
-            </div>
-            <!-- Stage 4: Map Question -->
-            <div id="stage-4" class="stage">
-                <h2>Część 4: Nasadzenia drzew</h2>
-                <div class="form-group">
-                    <label style="font-size: 32px; font-weight: bold;">Zaznacz preferowane miejsca nasadzeń:</label>
-                    <div id="map-plantings"></div>
-                </div>
-                <div class="button-group">
-                    <button type="button" class="back-btn">Powrót</button>
-                    <button type="button" id="clear-map-btn-plantings" class="del-btn">Wyczyść</button>
                     <button type="submit">Prześlij ankietę</button>
                 </div>
             </div>
