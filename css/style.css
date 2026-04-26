@@ -1047,3 +1047,83 @@ select.input-error,
     outline: 3px solid var(--primary-400);
     outline-offset: 2px;
 }
+
+/* ========================================
+   MAP MODAL
+   ======================================== */
+.map-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: var(--radius-lg);
+    opacity: 1;
+    transition: opacity var(--transition-base);
+}
+
+.map-modal-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.map-modal-content {
+    background: var(--surface);
+    padding: 2rem;
+    border-radius: var(--radius-xl);
+    max-width: 90%;
+    width: 400px;
+    box-shadow: var(--shadow-2xl);
+    position: relative;
+    text-align: center;
+    animation: markerPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.map-modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--gray-500);
+    cursor: pointer;
+    padding: 0;
+}
+
+.map-modal-close:hover {
+    color: var(--gray-900);
+}
+
+.map-info-btn {
+    position: absolute;
+    top: 20px;
+    right: 80px;
+    z-index: 999;
+    background: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 18px;
+    border: 2px solid var(--gray-300);
+    box-shadow: var(--shadow-md);
+    cursor: pointer;
+    color: var(--primary-600);
+    transition: all var(--transition-base);
+    padding: 0;
+}
+
+.map-info-btn:hover {
+    border-color: var(--primary-400);
+    transform: scale(1.1);
+}
