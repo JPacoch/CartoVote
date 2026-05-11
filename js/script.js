@@ -55,7 +55,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (targetStage) targetStage.classList.add('active');
         currentStage = stageNumber;
 
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (stageNumber === 2) {
+            setTimeout(() => {
+                const mapLabel = document.querySelector('#stage-2 .form-group label');
+                if (mapLabel) {
+                    mapLabel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 50);
+        } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
         const progressBar = document.getElementById('progress-bar');
         const progressText = document.getElementById('progress-text');
