@@ -5,9 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const formData = {
         personal: {
-            age: null,
-            gender: null,
-            education: null,
             district: null
         },
         cityFeedback: {
@@ -21,7 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
             transport: null,
             whatNew: null,
             parking: null,
-            feedback: null
+            feedback: null,
+            additionalComments: null
         },
         plantingLocations: []
     };
@@ -133,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (skipAdditionalBtn) {
         skipAdditionalBtn.addEventListener('click', () => {
             formData.cityFeedback = { problem: null, treesRating: null, summerRating: null, benefits: [null] };
-            formData.greenery = { greentime: null, transport: null, whatNew: null, parking: null, feedback: null };
+            formData.greenery = { greentime: null, transport: null, whatNew: null, parking: null, feedback: null, additionalComments: null };
             form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
         });
     }
@@ -161,11 +159,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentStage === 0) {
             return true;
         } else if (currentStage === 1) {
-            const age = document.getElementById('age');
-            const gender = document.getElementById('gender');
-            const education = document.getElementById('education');
             const district = document.getElementById('district');
-            stageInputs = [age, gender, education, district].filter(Boolean);
+            stageInputs = [district].filter(Boolean);
         } else if (currentStage === 2) {
             if (formData.plantingLocations.length === 0) {
                 const mapDiv = document.getElementById('map-plantings');
@@ -257,9 +252,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function captureCurrentStageData() {
         if (currentStage === 1) {
-            formData.personal.age = document.getElementById('age')?.value || null;
-            formData.personal.gender = document.getElementById('gender')?.value || null;
-            formData.personal.education = document.getElementById('education')?.value || null;
             formData.personal.district = document.getElementById('district')?.value || null;
         } else if (currentStage === 4) {
             formData.cityFeedback.problem = document.querySelector('input[name="problem"]:checked')?.value;
@@ -273,6 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.greenery.whatNew = document.querySelector('input[name="what-new"]:checked')?.value;
             formData.greenery.parking = document.querySelector('input[name="parking"]:checked')?.value;
             formData.greenery.feedback = document.getElementById('feedback').value;
+            formData.greenery.additionalComments = document.getElementById('additional-comments').value;
         }
     }
 
@@ -385,9 +378,9 @@ document.addEventListener('DOMContentLoaded', () => {
     restartBtn.addEventListener('click', () => {
         form.reset();
 
-        formData.personal = { age: null, gender: null, education: null, district: null };
+        formData.personal = { district: null };
         formData.cityFeedback = { problem: null, treesRating: 3, summerRating: 3, benefits: [] };
-        formData.greenery = { greentime: null, transport: null, whatNew: null, parking: null, feedback: null };
+        formData.greenery = { greentime: null, transport: null, whatNew: null, parking: null, feedback: null, additionalComments: null };
         formData.plantingLocations = [];
 
         markersPlantings.forEach(m => mapPlantings.removeLayer(m));
@@ -405,6 +398,11 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
+        if (!validateCurrentStage()) {
+            return;
+        }
+        captureCurrentStageData();
+
         console.log('Submitting data:', formData);
 
         if (!supabaseUrl || supabaseUrl === 'YOUR_SUPABASE_URL') {
@@ -415,28 +413,25 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
 
             const payload = {
-                user_age: parseInt(formData.personal.age),
-                user_gender: formData.personal.gender,
-                education_level: formData.personal.education,
                 district: formData.personal.district,
 
                 problem_type: formData.cityFeedback.problem,
                 trees_rating: formData.cityFeedback.treesRating === null ? null : parseInt(formData.cityFeedback.treesRating),
                 summer_rating: formData.cityFeedback.summerRating === null ? null : parseInt(formData.cityFeedback.summerRating),
-                benefits_type: formData.cityFeedback.benefits,
+                benefits: formData.cityFeedback.benefits,
 
                 greenery_time: formData.greenery.greentime,
                 transport_mode: formData.greenery.transport,
                 desired_greenery: formData.greenery.whatNew,
                 parking_opinion: formData.greenery.parking,
                 heat_island_feedback: formData.greenery.feedback,
+                additional_comments: formData.greenery.additionalComments,
 
-                planting_locations: formData.plantingLocations,
-                residence_location: null
+                planting_locations: formData.plantingLocations
             };
 
             const { data, error } = await supabaseClient
-                .from('test2')
+                .from('geoankieta')
                 .insert([payload]);
 
             if (error) throw error;
