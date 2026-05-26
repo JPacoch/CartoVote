@@ -700,12 +700,6 @@ input[type="checkbox"]:checked+label {
     box-shadow: var(--shadow-glow);
 }
 
-input[type="checkbox"]:checked+label::before {
-    content: '✓';
-    margin-right: 8px;
-    font-size: 1.1em;
-    font-weight: 800;
-}
 
 input[type="checkbox"]+label:hover {
     border-color: var(--primary-300);
